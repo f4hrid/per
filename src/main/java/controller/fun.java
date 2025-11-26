@@ -4,6 +4,7 @@
  */
 package controller;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -17,6 +18,11 @@ import javax.swing.UIManager;
 public class fun {
     public static void print(Object t) {
         System.out.println(t);
+    }
+    
+    public static void addTest(JPanel contenedor, JPanel modelo){
+        contenedor.add(modelo);
+        contenedor.repaint();
     }
     
     public static void replicate(JComponent comp, JPanel panel, int cantidad){
@@ -37,6 +43,14 @@ public class fun {
     public static void themeFlatLight() {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception e) {
+            System.out.println("Error de función Flatlaf()");
+        }
+    }
+    
+    public static void themeFlatDark() {
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception e) {
             System.out.println("Error de función Flatlaf()");
         }

@@ -9,7 +9,7 @@ package view;
  * @author Fahrid
  */
 public class home extends javax.swing.JFrame {
-    controller.homeController controller = new controller.homeController(this);
+    controller.homeController controller = new controller.homeController(this, new ofertamodpanel());
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(home.class.getName());
 
     /**
@@ -18,6 +18,7 @@ public class home extends javax.swing.JFrame {
     public home() {
         initComponents();
         controller.expandMenu();
+        controller.topButtons();
     }
 
     /**
@@ -30,15 +31,30 @@ public class home extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        menu_panel = new jilmar.PanelRound();
-        contentbutton = new javax.swing.JPanel();
+        contentbuttons = new javax.swing.JPanel();
         back_uv = new javax.swing.JPanel();
         icon_uv = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        labelRound5 = new jilmar.LabelRound();
-        labelRound6 = new jilmar.LabelRound();
-        jButton1 = new javax.swing.JButton();
+        contentpanel = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        contentcursos = new javax.swing.JPanel();
+        ofertamodpanel4 = new view.ofertamodpanel();
+        ofertamodpanel5 = new view.ofertamodpanel();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        contentdiplo = new javax.swing.JPanel();
+        ofertamodpanel3 = new view.ofertamodpanel();
+        toppanel = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        boton_cursos = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        boton_diplomados = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -46,95 +62,135 @@ public class home extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(960, 540));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(80, 100));
-
-        menu_panel.setBackground(new java.awt.Color(195, 22, 26));
-        menu_panel.setPreferredSize(new java.awt.Dimension(70, 70));
-        menu_panel.setRoundBottomLeft(25);
-        menu_panel.setRoundBottomRight(25);
-        menu_panel.setRoundTopLeft(25);
-        menu_panel.setRoundTopRight(25);
-        menu_panel.setLayout(new java.awt.BorderLayout());
-
-        contentbutton.setBackground(new java.awt.Color(195, 22, 26));
-        contentbutton.setOpaque(false);
-        contentbutton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        contentbuttons.setBackground(new java.awt.Color(195, 22, 26));
+        contentbuttons.setPreferredSize(new java.awt.Dimension(80, 100));
+        contentbuttons.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         back_uv.setBackground(new java.awt.Color(166, 19, 22));
         back_uv.setOpaque(false);
         back_uv.setPreferredSize(new java.awt.Dimension(50, 50));
-        back_uv.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        icon_uv.setBackground(new java.awt.Color(255, 51, 255));
+        icon_uv.setBackground(new java.awt.Color(255, 51, 51));
         icon_uv.setOpaque(true);
-        back_uv.add(icon_uv, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 50));
 
-        contentbutton.add(back_uv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 70, 70));
+        javax.swing.GroupLayout back_uvLayout = new javax.swing.GroupLayout(back_uv);
+        back_uv.setLayout(back_uvLayout);
+        back_uvLayout.setHorizontalGroup(
+            back_uvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(back_uvLayout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addComponent(icon_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+        back_uvLayout.setVerticalGroup(
+            back_uvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, back_uvLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(icon_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
+        );
 
-        menu_panel.add(contentbutton, java.awt.BorderLayout.PAGE_END);
+        contentbuttons.add(back_uv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 80, 90));
+
+        jPanel1.add(contentbuttons, java.awt.BorderLayout.LINE_START);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        contentpanel.setBackground(new java.awt.Color(255, 255, 255));
+        contentpanel.setLayout(new java.awt.CardLayout());
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        contentcursos.setBackground(new java.awt.Color(255, 204, 204));
+        contentcursos.setLayout(new java.awt.GridLayout(10, 1, 10, 10));
+        contentcursos.add(ofertamodpanel4);
+        contentcursos.add(ofertamodpanel5);
+
+        jScrollPane1.setViewportView(contentcursos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(menu_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(135, Short.MAX_VALUE)
-                .addComponent(menu_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.WEST);
+        contentpanel.add(jPanel2, "curso");
 
-        labelRound5.setBackground(new java.awt.Color(255, 255, 0));
-        labelRound5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelRound5.setRoundBottomLeft(100);
-        labelRound5.setRoundBottomRight(100);
-        labelRound5.setRoundTopLeft(100);
-        labelRound5.setRoundTopRight(100);
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        labelRound6.setBackground(new java.awt.Color(255, 255, 0));
-        labelRound6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelRound6.setRoundBottomLeft(100);
-        labelRound6.setRoundBottomRight(100);
-        labelRound6.setRoundTopLeft(100);
-        labelRound6.setRoundTopRight(100);
+        contentdiplo.setBackground(new java.awt.Color(255, 255, 255));
+        contentdiplo.setLayout(new java.awt.GridLayout(10, 2, 10, 10));
+        contentdiplo.add(ofertamodpanel3);
 
-        jButton1.setText("jButton1");
+        jScrollPane2.setViewportView(contentdiplo);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(508, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(297, 297, 297))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(labelRound5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(labelRound6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))))
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 268, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelRound5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelRound6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
         );
+
+        contentpanel.add(jPanel4, "diplomado");
+
+        jPanel3.add(contentpanel, java.awt.BorderLayout.CENTER);
+
+        toppanel.setBackground(new java.awt.Color(255, 255, 255));
+        toppanel.setLayout(new java.awt.BorderLayout());
+
+        jPanel9.setPreferredSize(new java.awt.Dimension(906, 30));
+        jPanel9.setLayout(new java.awt.GridLayout(1, 0));
+
+        boton_cursos.setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Cursos");
+        jLabel1.setOpaque(true);
+        boton_cursos.add(jLabel1);
+
+        jPanel9.add(boton_cursos);
+
+        boton_diplomados.setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Diplomados");
+        jLabel2.setOpaque(true);
+        boton_diplomados.add(jLabel2);
+
+        jPanel9.add(boton_diplomados);
+
+        jPanel7.setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Talleres");
+        jPanel7.add(jLabel3);
+
+        jPanel9.add(jPanel7);
+
+        jPanel11.setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Seminarios");
+        jPanel11.add(jLabel4);
+
+        jPanel9.add(jPanel11);
+
+        toppanel.add(jPanel9, java.awt.BorderLayout.PAGE_END);
+
+        jPanel3.add(toppanel, java.awt.BorderLayout.PAGE_START);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -150,14 +206,29 @@ public class home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel back_uv;
-    public javax.swing.JPanel contentbutton;
+    public javax.swing.JPanel boton_cursos;
+    public javax.swing.JPanel boton_diplomados;
+    public javax.swing.JPanel contentbuttons;
+    public javax.swing.JPanel contentcursos;
+    public javax.swing.JPanel contentdiplo;
+    public javax.swing.JPanel contentpanel;
     public javax.swing.JLabel icon_uv;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    public jilmar.LabelRound labelRound5;
-    public jilmar.LabelRound labelRound6;
-    private jilmar.PanelRound menu_panel;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private view.ofertamodpanel ofertamodpanel3;
+    private view.ofertamodpanel ofertamodpanel4;
+    private view.ofertamodpanel ofertamodpanel5;
+    private javax.swing.JPanel toppanel;
     // End of variables declaration//GEN-END:variables
 }
