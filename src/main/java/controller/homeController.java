@@ -4,12 +4,13 @@
  */
 package controller;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.CardLayout;
 import java.awt.Cursor;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import view.home;
-import view.ofertamodpanel;
+import view.oftModel;
 
 /**
  *
@@ -17,11 +18,10 @@ import view.ofertamodpanel;
  */
 public class homeController {
     view.home main;
-    view.ofertamodpanel ofertas;
     
-    public homeController (home home, ofertamodpanel oferta) {
+    
+    public homeController (home home) {
         this.main = home;
-        this.ofertas = oferta;
     }
 
     public void expandMenu () {
@@ -30,8 +30,8 @@ public class homeController {
         uv.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
-                fun.print("UNIVALLE");
-                fun.addTest(main.contentcursos, ofertas);
+                //fun.print("UNIVALLE");
+                fun.addTest(main.contentcursos, new oftModel());
             }
             
             @Override
@@ -82,4 +82,9 @@ public class homeController {
         });
         
     }
+    
+    public void setImgs(){
+        main.icon_uv.setSVGImage("svg/documento.svg", 50, 50);
+    }
+    
 }

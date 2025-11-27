@@ -16,6 +16,8 @@ import javax.swing.UIManager;
  * @author Fahrid
  */
 public class fun {
+    public static view.oftModel mod;
+    
     public static void print(Object t) {
         System.out.println(t);
     }
@@ -23,6 +25,7 @@ public class fun {
     public static void addTest(JPanel contenedor, JPanel modelo){
         contenedor.add(modelo);
         contenedor.repaint();
+        contenedor.revalidate();
     }
     
     public static void replicate(JComponent comp, JPanel panel, int cantidad){

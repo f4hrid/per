@@ -4,12 +4,14 @@
  */
 package view;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 /**
  *
  * @author Fahrid
  */
 public class home extends javax.swing.JFrame {
-    controller.homeController controller = new controller.homeController(this, new ofertamodpanel());
+    controller.homeController controller = new controller.homeController(this);
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(home.class.getName());
 
     /**
@@ -19,6 +21,7 @@ public class home extends javax.swing.JFrame {
         initComponents();
         controller.expandMenu();
         controller.topButtons();
+        controller.setImgs();
     }
 
     /**
@@ -33,18 +36,15 @@ public class home extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         contentbuttons = new javax.swing.JPanel();
         back_uv = new javax.swing.JPanel();
-        icon_uv = new javax.swing.JLabel();
+        icon_uv = new custom.LabelSVG();
         jPanel3 = new javax.swing.JPanel();
         contentpanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         contentcursos = new javax.swing.JPanel();
-        ofertamodpanel4 = new view.ofertamodpanel();
-        ofertamodpanel5 = new view.ofertamodpanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         contentdiplo = new javax.swing.JPanel();
-        ofertamodpanel3 = new view.ofertamodpanel();
         toppanel = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         boton_cursos = new javax.swing.JPanel();
@@ -63,34 +63,42 @@ public class home extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         contentbuttons.setBackground(new java.awt.Color(195, 22, 26));
-        contentbuttons.setPreferredSize(new java.awt.Dimension(80, 100));
-        contentbuttons.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        contentbuttons.setPreferredSize(new java.awt.Dimension(80, 540));
 
         back_uv.setBackground(new java.awt.Color(166, 19, 22));
         back_uv.setOpaque(false);
         back_uv.setPreferredSize(new java.awt.Dimension(50, 50));
-
-        icon_uv.setBackground(new java.awt.Color(255, 51, 51));
-        icon_uv.setOpaque(true);
 
         javax.swing.GroupLayout back_uvLayout = new javax.swing.GroupLayout(back_uv);
         back_uv.setLayout(back_uvLayout);
         back_uvLayout.setHorizontalGroup(
             back_uvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(back_uvLayout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
-                .addComponent(icon_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(icon_uv, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         back_uvLayout.setVerticalGroup(
             back_uvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, back_uvLayout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
-                .addComponent(icon_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+            .addGroup(back_uvLayout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(icon_uv, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        contentbuttons.add(back_uv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 80, 90));
+        javax.swing.GroupLayout contentbuttonsLayout = new javax.swing.GroupLayout(contentbuttons);
+        contentbuttons.setLayout(contentbuttonsLayout);
+        contentbuttonsLayout.setHorizontalGroup(
+            contentbuttonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(back_uv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        contentbuttonsLayout.setVerticalGroup(
+            contentbuttonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentbuttonsLayout.createSequentialGroup()
+                .addContainerGap(407, Short.MAX_VALUE)
+                .addComponent(back_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
+        );
 
         jPanel1.add(contentbuttons, java.awt.BorderLayout.LINE_START);
 
@@ -103,9 +111,6 @@ public class home extends javax.swing.JFrame {
 
         contentcursos.setBackground(new java.awt.Color(255, 204, 204));
         contentcursos.setLayout(new java.awt.GridLayout(10, 1, 10, 10));
-        contentcursos.add(ofertamodpanel4);
-        contentcursos.add(ofertamodpanel5);
-
         jScrollPane1.setViewportView(contentcursos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -125,8 +130,6 @@ public class home extends javax.swing.JFrame {
 
         contentdiplo.setBackground(new java.awt.Color(255, 255, 255));
         contentdiplo.setLayout(new java.awt.GridLayout(10, 2, 10, 10));
-        contentdiplo.add(ofertamodpanel3);
-
         jScrollPane2.setViewportView(contentdiplo);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -212,7 +215,7 @@ public class home extends javax.swing.JFrame {
     public javax.swing.JPanel contentcursos;
     public javax.swing.JPanel contentdiplo;
     public javax.swing.JPanel contentpanel;
-    public javax.swing.JLabel icon_uv;
+    public custom.LabelSVG icon_uv;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -226,9 +229,6 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private view.ofertamodpanel ofertamodpanel3;
-    private view.ofertamodpanel ofertamodpanel4;
-    private view.ofertamodpanel ofertamodpanel5;
     private javax.swing.JPanel toppanel;
     // End of variables declaration//GEN-END:variables
 }
