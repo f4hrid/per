@@ -68,36 +68,22 @@ public class home extends javax.swing.JFrame {
         back_uv.setBackground(new java.awt.Color(166, 19, 22));
         back_uv.setOpaque(false);
         back_uv.setPreferredSize(new java.awt.Dimension(50, 50));
-
-        javax.swing.GroupLayout back_uvLayout = new javax.swing.GroupLayout(back_uv);
-        back_uv.setLayout(back_uvLayout);
-        back_uvLayout.setHorizontalGroup(
-            back_uvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(back_uvLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(icon_uv, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
-        back_uvLayout.setVerticalGroup(
-            back_uvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(back_uvLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(icon_uv, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
+        back_uv.setLayout(new java.awt.BorderLayout());
+        back_uv.add(icon_uv, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout contentbuttonsLayout = new javax.swing.GroupLayout(contentbuttons);
         contentbuttons.setLayout(contentbuttonsLayout);
         contentbuttonsLayout.setHorizontalGroup(
             contentbuttonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(back_uv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentbuttonsLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(back_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         contentbuttonsLayout.setVerticalGroup(
             contentbuttonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentbuttonsLayout.createSequentialGroup()
-                .addContainerGap(407, Short.MAX_VALUE)
-                .addComponent(back_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addGap(450, 450, 450)
+                .addComponent(back_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel1.add(contentbuttons, java.awt.BorderLayout.LINE_START);

@@ -4,7 +4,6 @@
  */
 package view;
 
-import custom.TextAreaLabel;
 
 /**
  *
@@ -35,8 +34,7 @@ public class oftModel extends javax.swing.JPanel {
         titulo = new javax.swing.JLabel();
         horas = new javax.swing.JLabel();
         seccion = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        textAreaLabel2 = new TextAreaLabel();
+        textAreaLabel1 = new custom.TextAreaLabel();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -68,28 +66,27 @@ public class oftModel extends javax.swing.JPanel {
 
         seccion.setText("jLabel3");
 
-        textAreaLabel2.setColumns(20);
-        textAreaLabel2.setRows(5);
-        jScrollPane2.setViewportView(textAreaLabel2);
+        textAreaLabel1.setEditable(false);
+        textAreaLabel1.setColumns(20);
+        textAreaLabel1.setRows(5);
+        textAreaLabel1.setText("fsafsafsaf");
+        textAreaLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textAreaLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jSeparator1)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(horas)
-                                .addGap(18, 18, 18)
-                                .addComponent(seccion))
-                            .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2)))
+                        .addComponent(horas)
+                        .addGap(18, 18, 18)
+                        .addComponent(seccion)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -103,8 +100,8 @@ public class oftModel extends javax.swing.JPanel {
                     .addComponent(seccion))
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(textAreaLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -138,10 +135,9 @@ public class oftModel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel seccion;
-    private TextAreaLabel textAreaLabel2;
+    private custom.TextAreaLabel textAreaLabel1;
     public javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }
