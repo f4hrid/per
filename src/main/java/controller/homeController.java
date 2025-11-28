@@ -74,6 +74,12 @@ public class homeController {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
                 main.boton_cursos.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                main.boton_cursos.setBackground(fun.touchUp(true));
+            }
+            
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e){
+                main.boton_cursos.setBackground(fun.touchUp(false));
             }
         });
         
@@ -88,6 +94,12 @@ public class homeController {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
                 main.boton_diplomados.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                main.boton_diplomados.setBackground(fun.touchUp(true));
+            }
+            
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e){
+                main.boton_diplomados.setBackground(fun.touchUp(false));
             }
         });
         
