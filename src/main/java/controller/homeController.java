@@ -4,7 +4,6 @@
  */
 package controller;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.CardLayout;
 import java.awt.Cursor;
 import javax.swing.JLabel;
@@ -24,6 +23,17 @@ public class homeController {
         this.main = home;
     }
 
+    public void init(){
+        switch (fun.idchoose()){
+            case 1 -> {
+                expandMenu();
+                topButtons();
+                setImgs();
+            }
+            default -> expandMenu();
+        }
+    }
+    
     public void expandMenu () {
         JLabel uv = main.icon_uv;
         JPanel buv = main.back_uv;

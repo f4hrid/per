@@ -34,7 +34,7 @@ public class oftModel extends javax.swing.JPanel {
         titulo = new javax.swing.JLabel();
         horas = new javax.swing.JLabel();
         seccion = new javax.swing.JLabel();
-        textAreaLabel1 = new custom.TextAreaLabel();
+        desc = new custom.TextAreaLabel();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -66,11 +66,11 @@ public class oftModel extends javax.swing.JPanel {
 
         seccion.setText("jLabel3");
 
-        textAreaLabel1.setEditable(false);
-        textAreaLabel1.setColumns(20);
-        textAreaLabel1.setRows(5);
-        textAreaLabel1.setText("fsafsafsaf");
-        textAreaLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        desc.setEditable(false);
+        desc.setColumns(20);
+        desc.setRows(5);
+        desc.setText("TextAreaLabel1");
+        desc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -79,7 +79,7 @@ public class oftModel extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textAreaLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(desc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jSeparator1)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(horas)
@@ -101,7 +101,7 @@ public class oftModel extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(textAreaLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                .addComponent(desc, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -131,13 +131,13 @@ public class oftModel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public custom.TextAreaLabel desc;
     private javax.swing.JLabel horas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel seccion;
-    private custom.TextAreaLabel textAreaLabel1;
     public javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

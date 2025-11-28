@@ -4,7 +4,7 @@
  */
 package view;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
+import controller.fun;
 
 /**
  *
@@ -19,9 +19,8 @@ public class home extends javax.swing.JFrame {
      */
     public home() {
         initComponents();
-        controller.expandMenu();
-        controller.topButtons();
-        controller.setImgs();
+        controller.init();
+        
     }
 
     /**

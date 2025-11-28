@@ -6,8 +6,10 @@ package controller;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.google.common.base.Strings;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -20,6 +22,29 @@ public class fun {
     
     public static void print(Object t) {
         System.out.println(t);
+    }
+    
+    public static int idchoose(){
+        String mensaje = "Especifique su rol:";
+        String titulo = "Rol";        
+        String[] roles = {
+            "Interesado",
+            "Estudiante",
+            "Docente",
+            "Administrador"
+        };
+
+        int choose = JOptionPane.showOptionDialog(
+                null, 
+                mensaje, 
+                titulo, 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.INFORMATION_MESSAGE, 
+                null, 
+                roles,
+                roles[0]);
+        
+        return choose;
     }
     
     public static void addTest(JPanel contenedor, JPanel modelo){
