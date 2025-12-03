@@ -4,12 +4,17 @@
  */
 package controller;
 
+import custom.LabelSVG;
 import java.awt.CardLayout;
 import java.awt.Cursor;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import view.archetype.*;
+import jilmar.PanelRound;
+import model.*;
 import view.home;
-import view.oftModel;
+import view.archetype.panelModel;
 
 /**
  *
@@ -24,51 +29,135 @@ public class homeController {
     }
 
     public void init(){
-        switch (fun.idchoose()){
-            case 1 -> {
-                expandMenu();
-                topButtons();
-                setImgs();
-            }
-            default -> expandMenu();
-        }
+        buttonsMenu();
+        //menuButtons();
+    }
+    /*
+    public void test(){
+        JPanel model = new buttonModel()
+        PanelRound boton = new buttonModel().boton;
+        LabelSVG icono = new buttonModel().icono;
+        JLabel titulo = new buttonModel().titulo;
+        
+        main.menupanel.add(model)
+    }
+    */
+    
+    public void buttonsMenu(){
+        buttonOffers(); // boton de visualizador de ofertas académicas
+        buttonCOffers(); // boton de diseño de ofertas
+        buttonUser(); //boton de usuario
+        exitButton(); // boton de guardado
     }
     
-    public void expandMenu () {
-        JLabel uv = main.icon_uv;
-        JPanel buv = main.back_uv;
-        uv.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void buttonOffers () {
+        PanelRound boa = main.boton_ofertas;
+        boa.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 //fun.print("UNIVALLE");
-                fun.addTest(main.contentcursos, new oftModel());
+                //fun.addMix(main.contentpanel_ofertas, new panelModel());
             }
             
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
                 // cambiar cursor
-                uv.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                
-                // repintar
-                //fun.getOpaque(uv, true);
+                boa.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                // cambiar color
+                boa.setBackground(config.reduv);
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                //fun.getOpaque(uv, false);
-
+                boa.setBackground(main.menupanel.getBackground());
             }
         });
     }
+        
+    public void buttonCOffers(){
+        PanelRound bcoa = main.boton_cofertas;
+        bcoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                //boton de creación de ofertas cardlayout
+            }
+            
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e){
+                bcoa.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                bcoa.setBackground(config.reduv);
+            }
+            
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e){
+                bcoa.setBackground(main.menupanel.getBackground());
+            }
+            
+        });
+    }
+        
+    public void buttonUser(){
+        PanelRound bua = main.boton_usuarios;
+        bua.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                // boton de visualizador de usuarios del sistema: docentes, estudiante, administradores
+                // control total a la información
+                // por card layout
+            }
+            
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e){
+                bua.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                bua.setBackground(config.reduv);
+            }
+            
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e){
+                bua.setBackground(main.menupanel.getBackground());
+            }
+            
+        });
+    }
+        
+    public void exitButton(){
+        PanelRound bes = main.boton_salida;
+        bes.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                int confirm = JOptionPane.showConfirmDialog(
+                        null, 
+                        "¿Estás seguro que deseas guardar los cambios en la base de datos?",
+                        "Registrar Cambios",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+                fun.print(confirm);
+            }
+            
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e){
+                bes.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                bes.setBackground(config.reduv);
+            }
+            
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e){
+                bes.setBackground(main.menupanel.getBackground());
+            }
+            
+        });
+    }
     
-    public void topButtons(){
+    /*
+    public void menuButtons(){
         
         main.boton_cursos.addMouseListener(new java.awt.event.MouseAdapter() {
             
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
-                CardLayout card = (CardLayout) main.contentpanel.getLayout();
-                card.show(main.contentpanel, "curso");
+                CardLayout card = (CardLayout) main.contentpanel_ofertas.getLayout();
+                card.show(main.contentpanel_ofertas, "curso");
             }
             
             @Override
@@ -87,8 +176,8 @@ public class homeController {
             
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
-                CardLayout card = (CardLayout) main.contentpanel.getLayout();
-                card.show(main.contentpanel, "diplomado");
+                CardLayout card = (CardLayout) main.contentpanel_ofertas.getLayout();
+                card.show(main.contentpanel_ofertas, "diplomado");
             }
             
             @Override
@@ -104,9 +193,8 @@ public class homeController {
         });
         
     }
-    
-    public void setImgs(){
-        main.icon_uv.setSVGImage("svg/documento.svg", 50, 50);
-    }
+    */
+
+
     
 }

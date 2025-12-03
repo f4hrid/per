@@ -6,7 +6,7 @@ package controller;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.google.common.base.Strings;
+import java.awt.Color;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,36 +18,14 @@ import javax.swing.UIManager;
  * @author Fahrid
  */
 public class fun {
-    public static view.oftModel mod;
+    public static view.archetype.panelModel mod;
     
     public static void print(Object t) {
         System.out.println(t);
     }
     
-    public static int idchoose(){
-        String mensaje = "Especifique su rol:";
-        String titulo = "Rol";        
-        String[] roles = {
-            "Interesado",
-            "Estudiante",
-            "Docente",
-            "Administrador"
-        };
-
-        int choose = JOptionPane.showOptionDialog(
-                null, 
-                mensaje, 
-                titulo, 
-                JOptionPane.DEFAULT_OPTION, 
-                JOptionPane.INFORMATION_MESSAGE, 
-                null, 
-                roles,
-                roles[0]);
-        
-        return choose;
-    }
     
-    public static void addTest(JPanel contenedor, JPanel modelo){
+    public static void addMix(JPanel contenedor, JPanel modelo){
         contenedor.add(modelo);
         contenedor.repaint();
         contenedor.revalidate();
@@ -59,13 +37,12 @@ public class fun {
         }
     }
     
-    public static void getOpaque(JComponent comp, boolean bool){
-        comp.setOpaque(bool);
-        comp.repaint();
-    }
     
-    public static void setFullScreen(JFrame frame) {
+    
+    public static void setScreen(JFrame frame, String titulo) {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setTitle(titulo);
+        frame.setVisible(true);
     }
     
     public static void themeFlatLight() {

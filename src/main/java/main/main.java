@@ -6,6 +6,7 @@ package main;
 
 import controller.fun;
 import javax.swing.JFrame;
+import model.config;
 import view.home;
 
 /**
@@ -16,7 +17,6 @@ public class main {
     public static void main(String[] args) {
         fun.themeFlatLight();
         JFrame home = new home();
-        home.setVisible(true);
-        fun.setFullScreen(home);
+        fun.setScreen(home, config.titulo);
     }
 }

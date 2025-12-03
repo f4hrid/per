@@ -4,7 +4,6 @@
  */
 package view;
 
-import controller.fun;
 
 /**
  *
@@ -20,7 +19,14 @@ public class home extends javax.swing.JFrame {
     public home() {
         initComponents();
         controller.init();
-        
+        setSVG();
+    }
+    
+    private void setSVG(){
+        iconsvg_ofertas.setSVGImage("svg/library.svg", 30, 30);
+        iconsvg_cofertas.setSVGImage("svg/assignment.svg", 30, 30);
+        iconsvg_usuarios.setSVGImage("svg/users.svg", 30, 30);
+        iconsvg_salida.setSVGImage("svg/leave.svg", 30, 30);
     }
 
     /**
@@ -32,157 +38,238 @@ public class home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        contentbuttons = new javax.swing.JPanel();
-        back_uv = new javax.swing.JPanel();
-        icon_uv = new custom.LabelSVG();
-        jPanel3 = new javax.swing.JPanel();
         contentpanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        panelRound2 = new jilmar.PanelRound();
+        boton_cursos = new jilmar.PanelRound();
+        jLabel2 = new javax.swing.JLabel();
+        boton_diplomados = new jilmar.PanelRound();
+        jLabel4 = new javax.swing.JLabel();
+        boton_talleres = new jilmar.PanelRound();
+        jLabel3 = new javax.swing.JLabel();
+        boton_seminarios = new jilmar.PanelRound();
+        jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        contentcursos = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        contentdiplo = new javax.swing.JPanel();
-        toppanel = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        boton_cursos = new javax.swing.JPanel();
+        contentpanel_ofertas = new javax.swing.JPanel();
+        menupanel = new javax.swing.JPanel();
+        boton_ofertas = new jilmar.PanelRound();
+        iconsvg_ofertas = new custom.LabelSVG();
         jLabel1 = new javax.swing.JLabel();
-        boton_diplomados = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        boton_cofertas = new jilmar.PanelRound();
+        iconsvg_cofertas = new custom.LabelSVG();
+        jLabel6 = new javax.swing.JLabel();
+        boton_usuarios = new jilmar.PanelRound();
+        iconsvg_usuarios = new custom.LabelSVG();
+        jLabel7 = new javax.swing.JLabel();
+        boton_salida = new jilmar.PanelRound();
+        iconsvg_salida = new custom.LabelSVG();
+        jLabel8 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.CardLayout());
-
-        jPanel1.setPreferredSize(new java.awt.Dimension(960, 540));
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        contentbuttons.setBackground(new java.awt.Color(195, 22, 26));
-        contentbuttons.setPreferredSize(new java.awt.Dimension(80, 540));
-
-        back_uv.setBackground(new java.awt.Color(166, 19, 22));
-        back_uv.setOpaque(false);
-        back_uv.setPreferredSize(new java.awt.Dimension(50, 50));
-        back_uv.setLayout(new java.awt.BorderLayout());
-        back_uv.add(icon_uv, java.awt.BorderLayout.CENTER);
-
-        javax.swing.GroupLayout contentbuttonsLayout = new javax.swing.GroupLayout(contentbuttons);
-        contentbuttons.setLayout(contentbuttonsLayout);
-        contentbuttonsLayout.setHorizontalGroup(
-            contentbuttonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentbuttonsLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(back_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        contentbuttonsLayout.setVerticalGroup(
-            contentbuttonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentbuttonsLayout.createSequentialGroup()
-                .addGap(450, 450, 450)
-                .addComponent(back_uv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jPanel1.add(contentbuttons, java.awt.BorderLayout.LINE_START);
-
-        jPanel3.setLayout(new java.awt.BorderLayout());
 
         contentpanel.setBackground(new java.awt.Color(255, 255, 255));
         contentpanel.setLayout(new java.awt.CardLayout());
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        contentcursos.setBackground(new java.awt.Color(255, 204, 204));
-        contentcursos.setLayout(new java.awt.GridLayout(10, 1, 10, 10));
-        jScrollPane1.setViewportView(contentcursos);
+        panelRound2.setBackground(new java.awt.Color(195, 22, 26));
+        panelRound2.setPreferredSize(new java.awt.Dimension(500, 40));
+        panelRound2.setRoundBottomLeft(25);
+        panelRound2.setRoundBottomRight(25);
+        panelRound2.setRoundTopLeft(25);
+        panelRound2.setRoundTopRight(25);
+        panelRound2.setLayout(new javax.swing.BoxLayout(panelRound2, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-        );
+        boton_cursos.setBackground(new java.awt.Color(195, 22, 26));
+        boton_cursos.setRoundBottomLeft(25);
+        boton_cursos.setRoundTopLeft(25);
+        boton_cursos.setLayout(new java.awt.BorderLayout());
 
-        contentpanel.add(jPanel2, "curso");
-
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        contentdiplo.setBackground(new java.awt.Color(255, 255, 255));
-        contentdiplo.setLayout(new java.awt.GridLayout(10, 2, 10, 10));
-        jScrollPane2.setViewportView(contentdiplo);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-        );
-
-        contentpanel.add(jPanel4, "diplomado");
-
-        jPanel3.add(contentpanel, java.awt.BorderLayout.CENTER);
-
-        toppanel.setBackground(new java.awt.Color(255, 255, 255));
-        toppanel.setLayout(new java.awt.BorderLayout());
-
-        jPanel9.setPreferredSize(new java.awt.Dimension(906, 30));
-        jPanel9.setLayout(new java.awt.GridLayout(1, 0));
-
-        boton_cursos.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Cursos");
-        jLabel1.setOpaque(true);
-        boton_cursos.add(jLabel1);
-
-        jPanel9.add(boton_cursos);
-
-        boton_diplomados.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Diplomados");
-        jLabel2.setOpaque(true);
-        boton_diplomados.add(jLabel2);
+        jLabel2.setText("Cursos");
+        boton_cursos.add(jLabel2, java.awt.BorderLayout.CENTER);
 
-        jPanel9.add(boton_diplomados);
+        panelRound2.add(boton_cursos);
 
-        jPanel7.setLayout(new java.awt.GridLayout(1, 0));
+        boton_diplomados.setBackground(new java.awt.Color(195, 22, 26));
+        boton_diplomados.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Diplomados");
+        boton_diplomados.add(jLabel4, java.awt.BorderLayout.CENTER);
+
+        panelRound2.add(boton_diplomados);
+
+        boton_talleres.setBackground(new java.awt.Color(195, 22, 26));
+        boton_talleres.setLayout(new java.awt.BorderLayout());
+
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Talleres");
-        jPanel7.add(jLabel3);
+        boton_talleres.add(jLabel3, java.awt.BorderLayout.CENTER);
 
-        jPanel9.add(jPanel7);
+        panelRound2.add(boton_talleres);
 
-        jPanel11.setLayout(new java.awt.GridLayout(1, 0));
+        boton_seminarios.setBackground(new java.awt.Color(195, 22, 26));
+        boton_seminarios.setRoundBottomRight(25);
+        boton_seminarios.setRoundTopRight(25);
+        boton_seminarios.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Seminarios");
-        jPanel11.add(jLabel4);
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Seminarios");
+        boton_seminarios.add(jLabel5, java.awt.BorderLayout.CENTER);
 
-        jPanel9.add(jPanel11);
+        panelRound2.add(boton_seminarios);
 
-        toppanel.add(jPanel9, java.awt.BorderLayout.PAGE_END);
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.add(toppanel, java.awt.BorderLayout.PAGE_START);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setOpaque(false);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout contentpanel_ofertasLayout = new javax.swing.GroupLayout(contentpanel_ofertas);
+        contentpanel_ofertas.setLayout(contentpanel_ofertasLayout);
+        contentpanel_ofertasLayout.setHorizontalGroup(
+            contentpanel_ofertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 698, Short.MAX_VALUE)
+        );
+        contentpanel_ofertasLayout.setVerticalGroup(
+            contentpanel_ofertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 448, Short.MAX_VALUE)
+        );
 
-        getContentPane().add(jPanel1, "card2");
+        jScrollPane1.setViewportView(contentpanel_ofertas);
+
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelRound2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(panelRound2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        contentpanel.add(jPanel1, "card2");
+
+        getContentPane().add(contentpanel, java.awt.BorderLayout.CENTER);
+
+        menupanel.setBackground(new java.awt.Color(51, 51, 51));
+        menupanel.setPreferredSize(new java.awt.Dimension(200, 540));
+
+        boton_ofertas.setBackground(model.config.menugray);
+        boton_ofertas.setPreferredSize(new java.awt.Dimension(175, 50));
+        boton_ofertas.setRoundBottomLeft(10);
+        boton_ofertas.setRoundBottomRight(10);
+        boton_ofertas.setRoundTopLeft(10);
+        boton_ofertas.setRoundTopRight(10);
+        boton_ofertas.setLayout(new java.awt.BorderLayout());
+
+        iconsvg_ofertas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iconsvg_ofertas.setPreferredSize(new java.awt.Dimension(45, 45));
+        boton_ofertas.add(iconsvg_ofertas, java.awt.BorderLayout.LINE_START);
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Ofertas Académicas");
+        boton_ofertas.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        boton_cofertas.setBackground(model.config.menugray);
+        boton_cofertas.setPreferredSize(new java.awt.Dimension(175, 50));
+        boton_cofertas.setRoundBottomLeft(10);
+        boton_cofertas.setRoundBottomRight(10);
+        boton_cofertas.setRoundTopLeft(10);
+        boton_cofertas.setRoundTopRight(10);
+        boton_cofertas.setLayout(new java.awt.BorderLayout());
+
+        iconsvg_cofertas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iconsvg_cofertas.setPreferredSize(new java.awt.Dimension(45, 45));
+        boton_cofertas.add(iconsvg_cofertas, java.awt.BorderLayout.LINE_START);
+
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Creaciones Académicas");
+        boton_cofertas.add(jLabel6, java.awt.BorderLayout.CENTER);
+
+        boton_usuarios.setBackground(model.config.menugray);
+        boton_usuarios.setPreferredSize(new java.awt.Dimension(175, 50));
+        boton_usuarios.setRoundBottomLeft(10);
+        boton_usuarios.setRoundBottomRight(10);
+        boton_usuarios.setRoundTopLeft(10);
+        boton_usuarios.setRoundTopRight(10);
+        boton_usuarios.setLayout(new java.awt.BorderLayout());
+
+        iconsvg_usuarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iconsvg_usuarios.setPreferredSize(new java.awt.Dimension(45, 45));
+        boton_usuarios.add(iconsvg_usuarios, java.awt.BorderLayout.LINE_START);
+
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Usuarios del Sistema");
+        boton_usuarios.add(jLabel7, java.awt.BorderLayout.CENTER);
+
+        boton_salida.setBackground(model.config.menugray);
+        boton_salida.setPreferredSize(new java.awt.Dimension(175, 50));
+        boton_salida.setRoundBottomLeft(10);
+        boton_salida.setRoundBottomRight(10);
+        boton_salida.setRoundTopLeft(10);
+        boton_salida.setRoundTopRight(10);
+        boton_salida.setLayout(new java.awt.BorderLayout());
+
+        iconsvg_salida.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iconsvg_salida.setPreferredSize(new java.awt.Dimension(45, 45));
+        boton_salida.add(iconsvg_salida, java.awt.BorderLayout.LINE_START);
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Salir y guardar cambios");
+        boton_salida.add(jLabel8, java.awt.BorderLayout.CENTER);
+
+        jSeparator1.setForeground(new java.awt.Color(102, 102, 102));
+
+        javax.swing.GroupLayout menupanelLayout = new javax.swing.GroupLayout(menupanel);
+        menupanel.setLayout(menupanelLayout);
+        menupanelLayout.setHorizontalGroup(
+            menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menupanelLayout.createSequentialGroup()
+                .addContainerGap(9, Short.MAX_VALUE)
+                .addGroup(menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(boton_cofertas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boton_ofertas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boton_usuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boton_salida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        menupanelLayout.setVerticalGroup(
+            menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menupanelLayout.createSequentialGroup()
+                .addContainerGap(35, Short.MAX_VALUE)
+                .addComponent(boton_ofertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(boton_cofertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(boton_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 259, Short.MAX_VALUE)
+                .addComponent(boton_salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
+        );
+
+        getContentPane().add(menupanel, java.awt.BorderLayout.WEST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -193,27 +280,33 @@ public class home extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JPanel back_uv;
-    public javax.swing.JPanel boton_cursos;
-    public javax.swing.JPanel boton_diplomados;
-    public javax.swing.JPanel contentbuttons;
-    public javax.swing.JPanel contentcursos;
-    public javax.swing.JPanel contentdiplo;
-    public javax.swing.JPanel contentpanel;
-    public custom.LabelSVG icon_uv;
+    public jilmar.PanelRound boton_cofertas;
+    public jilmar.PanelRound boton_cursos;
+    public jilmar.PanelRound boton_diplomados;
+    public jilmar.PanelRound boton_ofertas;
+    public jilmar.PanelRound boton_salida;
+    public jilmar.PanelRound boton_seminarios;
+    public jilmar.PanelRound boton_talleres;
+    public jilmar.PanelRound boton_usuarios;
+    private javax.swing.JPanel contentpanel;
+    public javax.swing.JPanel contentpanel_ofertas;
+    public custom.LabelSVG iconsvg_cofertas;
+    public custom.LabelSVG iconsvg_ofertas;
+    public custom.LabelSVG iconsvg_salida;
+    public custom.LabelSVG iconsvg_usuarios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPanel toppanel;
+    private javax.swing.JSeparator jSeparator1;
+    public javax.swing.JPanel menupanel;
+    private jilmar.PanelRound panelRound2;
     // End of variables declaration//GEN-END:variables
 }
