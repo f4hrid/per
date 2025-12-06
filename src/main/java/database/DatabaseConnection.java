@@ -11,7 +11,7 @@ import java.sql.DriverManager;
  *
  * @author Fahrid
  */
-public class databaseConnection {
+public class DatabaseConnection {
     public Connection conexion;
     public static String user = "admin";
     public static String pass = "123admin456pro";

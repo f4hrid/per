@@ -16,14 +16,10 @@ import javax.swing.UIManager;
  * @author Fahrid
  */
 public class Functions {
-    public static view.archetype.PanelModel mod;
-    
     public static void print(Object t) {
         System.out.println(t);
     }
-    
 
-    
     //replica un objeto en un componente swing
     public static void replicate(JComponent comp, JPanel panel, int cantidad){
         for (int i = 0; i < cantidad; i++) {

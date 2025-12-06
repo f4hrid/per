@@ -9,12 +9,12 @@ package view.archetype;
  *
  * @author Fahrid
  */
-public class panelModel extends javax.swing.JPanel {
+public class PanelModel extends javax.swing.JPanel {
 
     /**
      * Creates new form ofertamodelpan
      */
-    public panelModel() {
+    public PanelModel() {
         initComponents();
     }
 

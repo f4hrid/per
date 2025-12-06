@@ -4,22 +4,29 @@
  */
 package controller;
 
-import static controller.fun.*;
+import static controller.Functions.*;
+import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
 import jilmar.PanelRound;
 import model.*;
-import view.home;
+import static model.config.*;
+import view.Home;
 
 /**
  *
  * @author Fahrid
  */
-public class homeController {
-    view.home main;
+public class HomeController {
+    view.Home main;
+    
+    private String CARD_OFFERS = "card_controlofertas";
+    private String CARD_COFFERS = "card_controlacademico";
+    private String CARD_USERS = "card_controlusuarios";
+
     
     
-    public homeController (home home) {
+    public HomeController (Home home) {
         this.main = home;
     }
 
@@ -46,84 +53,85 @@ public class homeController {
     }
     
     public void buttonOffers () {
-        PanelRound boa = main.boton_ofertas;
-        boa.addMouseListener(new java.awt.event.MouseAdapter() {
+        main.boton_ofertas.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 //fun.print("UNIVALLE");
-                changeCard(main.contentpanel, "control_ofertas");
+                main.selectCard(main.contentpanel, CARD_OFFERS);
+                
+                main.setUsefulButtonVisible(false);
             }
             
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
                 // cambiar cursor
-                boa.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+                main.setHandCursor(main.boton_ofertas);
+                
                 // cambiar color
-                boa.setBackground(config.reduv);
+                main.setShaded(main.boton_ofertas, reduv);
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                boa.setBackground(main.menupanel.getBackground());
+                main.setShaded(main.boton_ofertas, main.getBackgroundMenu());
             }
         });
     }
         
     public void buttonCOffers(){
-        PanelRound bcoa = main.boton_cofertas;
-        bcoa.addMouseListener(new java.awt.event.MouseAdapter() {
+        main.boton_cofertas.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 //boton de creación de ofertas cardlayout
-                changeCard(main.contentpanel, "control_academico");
+                main.selectCard(main.contentpanel, CARD_COFFERS);
                 
-                main.handybuttons_panel.setVisible(false);
+                main.setUsefulButtonVisible(true);
             }
             
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
-                bcoa.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                bcoa.setBackground(config.reduv);
+                main.setHandCursor(main.boton_cofertas);
+                
+                main.setShaded(main.boton_cofertas, reduv);
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                bcoa.setBackground(main.menupanel.getBackground());
+                main.setShaded(main.boton_cofertas, main.getBackgroundMenu());
             }
             
         });
     }
         
     public void buttonUser(){
-        PanelRound bua = main.boton_usuarios;
-        bua.addMouseListener(new java.awt.event.MouseAdapter() {
+        main.boton_usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 // boton de visualizador de usuarios del sistema: docentes, estudiante, administradores
                 // control total a la información
                 // por card layout
                 
-                changeCard(main.contentpanel, "control_usuarios");
+                main.selectCard(main.contentpanel, CARD_USERS);
+
+                main.setUsefulButtonVisible(true);
             }
             
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
-                bua.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                bua.setBackground(config.reduv);
+                main.setHandCursor(main.boton_usuarios);
+                main.setShaded(main.boton_usuarios, reduv);
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                bua.setBackground(main.menupanel.getBackground());
+                main.setShaded(main.boton_usuarios, main.getBackgroundMenu());
             }
             
         });
     }
         
     public void exitButton(){
-        PanelRound bes = main.boton_salida;
-        bes.addMouseListener(new java.awt.event.MouseAdapter() {
+        main.boton_salida.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 int confirm = JOptionPane.showConfirmDialog(
@@ -132,18 +140,19 @@ public class homeController {
                         "Registrar Cambios",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                fun.print(confirm);
+                Functions.print(confirm);
             }
             
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
-                bes.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                bes.setBackground(config.reduv);
+                main.setHandCursor(main.boton_salida);
+                main.setShaded(main.boton_salida, reduv);
+
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                bes.setBackground(main.menupanel.getBackground());
+                main.setShaded(main.boton_salida, main.getBackgroundMenu());
             }
             
         });
@@ -163,12 +172,12 @@ public class homeController {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
                 main.boton_cursos.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                main.boton_cursos.setBackground(fun.touchUp(true));
+                main.boton_cursos.setBackground(Functions.touchUp(true));
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                main.boton_cursos.setBackground(fun.touchUp(false));
+                main.boton_cursos.setBackground(Functions.touchUp(false));
             }
         });
         
@@ -183,12 +192,12 @@ public class homeController {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
                 main.boton_diplomados.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                main.boton_diplomados.setBackground(fun.touchUp(true));
+                main.boton_diplomados.setBackground(Functions.touchUp(true));
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                main.boton_diplomados.setBackground(fun.touchUp(false));
+                main.boton_diplomados.setBackground(Functions.touchUp(false));
             }
         });
         

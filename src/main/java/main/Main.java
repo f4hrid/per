@@ -4,19 +4,19 @@
 // curso capitulo 41
 package main;
 
-import controller.fun;
+import controller.Functions;
 import javax.swing.JFrame;
 import model.config;
-import view.home;
+import view.Home;
 
 /**
  *
  * @author Fahrid
  */
-public class main {
+public class Main {
     public static void main(String[] args) {
-        fun.themeFlatLight();
-        JFrame home = new home();
-        fun.setScreen(home, config.titulo);
+        Functions.themeFlatLight();
+        JFrame home = new Home();
+        Functions.setScreen(home, config.titulo);
     }
 }
