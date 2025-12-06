@@ -1,20 +1,15 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to changeCard this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
 
-import custom.LabelSVG;
-import java.awt.CardLayout;
+import static controller.fun.*;
 import java.awt.Cursor;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import view.archetype.*;
 import jilmar.PanelRound;
 import model.*;
 import view.home;
-import view.archetype.panelModel;
 
 /**
  *
@@ -56,7 +51,7 @@ public class homeController {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 //fun.print("UNIVALLE");
-                //fun.addMix(main.contentpanel_ofertas, new panelModel());
+                changeCard(main.contentpanel, "control_ofertas");
             }
             
             @Override
@@ -81,6 +76,9 @@ public class homeController {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 //boton de creación de ofertas cardlayout
+                changeCard(main.contentpanel, "control_academico");
+                
+                main.handybuttons_panel.setVisible(false);
             }
             
             @Override
@@ -105,6 +103,8 @@ public class homeController {
                 // boton de visualizador de usuarios del sistema: docentes, estudiante, administradores
                 // control total a la información
                 // por card layout
+                
+                changeCard(main.contentpanel, "control_usuarios");
             }
             
             @Override
