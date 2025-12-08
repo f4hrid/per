@@ -4,25 +4,27 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuario", catalog = "bd_gea", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"codigo_usuario"})})
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
@@ -35,13 +37,13 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_usuario")
+    @Column(name = "id_usuario", nullable = false)
     private Integer idUsuario;
-    @Column(name = "codigo_usuario")
+    @Column(name = "codigo_usuario", length = 20)
     private String codigoUsuario;
-    @Column(name = "rol_usuario")
+    @Column(name = "rol_usuario", length = 13)
     private String rolUsuario;
-    @Column(name = "contrasena_usuario")
+    @Column(name = "contrasena_usuario", length = 255)
     private String contrasenaUsuario;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Estudiante estudiante;

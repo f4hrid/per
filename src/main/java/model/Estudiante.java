@@ -4,31 +4,34 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "estudiante")
+@Table(name = "estudiante", catalog = "bd_gea", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"id_usuario"}),
+    @UniqueConstraint(columnNames = {"dni_estudiante"})})
 @NamedQueries({
     @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
     @NamedQuery(name = "Estudiante.findByIdEstudiante", query = "SELECT e FROM Estudiante e WHERE e.idEstudiante = :idEstudiante"),
@@ -44,27 +47,27 @@ public class Estudiante implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_estudiante")
+    @Column(name = "id_estudiante", nullable = false)
     private Integer idEstudiante;
     @Basic(optional = false)
-    @Column(name = "nombre_estudiante")
+    @Column(name = "nombre_estudiante", nullable = false, length = 255)
     private String nombreEstudiante;
     @Basic(optional = false)
-    @Column(name = "dni_estudiante")
+    @Column(name = "dni_estudiante", nullable = false, length = 15)
     private String dniEstudiante;
-    @Column(name = "telefono_estudiante")
+    @Column(name = "telefono_estudiante", length = 10)
     private String telefonoEstudiante;
     @Basic(optional = false)
-    @Column(name = "email_estudiante")
+    @Column(name = "email_estudiante", nullable = false, length = 255)
     private String emailEstudiante;
     @Basic(optional = false)
-    @Column(name = "fecha_nacimiento_estudiante")
+    @Column(name = "fecha_nacimiento_estudiante", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaNacimientoEstudiante;
     @Basic(optional = false)
-    @Column(name = "direccion_estudiante")
+    @Column(name = "direccion_estudiante", nullable = false, length = 100)
     private String direccionEstudiante;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     @OneToOne(optional = false)
     private Usuario idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstudiante")

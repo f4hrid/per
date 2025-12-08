@@ -4,23 +4,23 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "certificaciones")
+@Table(name = "certificaciones", catalog = "bd_gea", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Certificaciones.findAll", query = "SELECT c FROM Certificaciones c"),
     @NamedQuery(name = "Certificaciones.findByIdCertificado", query = "SELECT c FROM Certificaciones c WHERE c.idCertificado = :idCertificado"),
@@ -30,18 +30,18 @@ public class Certificaciones implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_certificado")
+    @Column(name = "id_certificado", nullable = false)
     private Integer idCertificado;
     @Basic(optional = false)
-    @Column(name = "fecha_certificado")
+    @Column(name = "fecha_certificado", nullable = false, length = 10)
     private String fechaCertificado;
-    @JoinColumn(name = "id_docente", referencedColumnName = "id_docente")
+    @JoinColumn(name = "id_docente", referencedColumnName = "id_docente", nullable = false)
     @ManyToOne(optional = false)
     private Docente idDocente;
-    @JoinColumn(name = "id_estudiante", referencedColumnName = "id_estudiante")
+    @JoinColumn(name = "id_estudiante", referencedColumnName = "id_estudiante", nullable = false)
     @ManyToOne(optional = false)
     private Estudiante idEstudiante;
-    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta")
+    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta", nullable = false)
     @ManyToOne(optional = false)
     private Ofertas idOferta;
 

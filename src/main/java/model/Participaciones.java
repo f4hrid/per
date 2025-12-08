@@ -4,27 +4,27 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "participaciones")
+@Table(name = "participaciones", catalog = "bd_gea", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Participaciones.findAll", query = "SELECT p FROM Participaciones p"),
     @NamedQuery(name = "Participaciones.findByIdParticipacion", query = "SELECT p FROM Participaciones p WHERE p.idParticipacion = :idParticipacion"),
@@ -36,7 +36,7 @@ public class Participaciones implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_participacion")
+    @Column(name = "id_participacion", nullable = false)
     private Integer idParticipacion;
     @Column(name = "fecha_asistencia")
     @Temporal(TemporalType.DATE)
@@ -46,15 +46,15 @@ public class Participaciones implements Serializable {
     private Date horaAsistencia;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @Column(name = "calificacion_aprobacion")
+    @Column(name = "calificacion_aprobacion", nullable = false, precision = 3, scale = 2)
     private BigDecimal calificacionAprobacion;
-    @JoinColumn(name = "id_docente", referencedColumnName = "id_docente")
+    @JoinColumn(name = "id_docente", referencedColumnName = "id_docente", nullable = false)
     @ManyToOne(optional = false)
     private Docente idDocente;
-    @JoinColumn(name = "id_estudiante", referencedColumnName = "id_estudiante")
+    @JoinColumn(name = "id_estudiante", referencedColumnName = "id_estudiante", nullable = false)
     @ManyToOne(optional = false)
     private Estudiante idEstudiante;
-    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta")
+    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta", nullable = false)
     @ManyToOne(optional = false)
     private Ofertas idOferta;
 

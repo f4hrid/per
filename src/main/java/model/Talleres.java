@@ -4,23 +4,23 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "talleres")
+@Table(name = "talleres", catalog = "bd_gea", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Talleres.findAll", query = "SELECT t FROM Talleres t"),
     @NamedQuery(name = "Talleres.findByIdTaller", query = "SELECT t FROM Talleres t WHERE t.idTaller = :idTaller"),
@@ -30,16 +30,16 @@ public class Talleres implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
-    @Column(name = "id_taller")
+    @Column(name = "id_taller", nullable = false)
     private int idTaller;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_oferta")
+    @Column(name = "id_oferta", nullable = false)
     private Integer idOferta;
     @Basic(optional = false)
-    @Column(name = "nombre_taller")
+    @Column(name = "nombre_taller", nullable = false, length = 100)
     private String nombreTaller;
-    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta", insertable = false, updatable = false)
+    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Ofertas ofertas;
 

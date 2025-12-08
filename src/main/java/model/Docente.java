@@ -4,28 +4,30 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "docente")
+@Table(name = "docente", catalog = "bd_gea", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"id_usuario"})})
 @NamedQueries({
     @NamedQuery(name = "Docente.findAll", query = "SELECT d FROM Docente d"),
     @NamedQuery(name = "Docente.findByIdDocente", query = "SELECT d FROM Docente d WHERE d.idDocente = :idDocente"),
@@ -36,10 +38,10 @@ public class Docente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_docente")
+    @Column(name = "id_docente", nullable = false)
     private Integer idDocente;
     @Basic(optional = false)
-    @Column(name = "nombre_docente")
+    @Column(name = "nombre_docente", nullable = false, length = 255)
     private String nombreDocente;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocente")
     private Collection<Participaciones> participacionesCollection;
@@ -47,7 +49,7 @@ public class Docente implements Serializable {
     private Collection<Ofertas> ofertasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocente")
     private Collection<Certificaciones> certificacionesCollection;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     @OneToOne(optional = false)
     private Usuario idUsuario;
 

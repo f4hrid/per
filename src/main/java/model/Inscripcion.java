@@ -4,26 +4,26 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "inscripcion")
+@Table(name = "inscripcion", catalog = "bd_gea", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Inscripcion.findAll", query = "SELECT i FROM Inscripcion i"),
     @NamedQuery(name = "Inscripcion.findByFechaInscripcion", query = "SELECT i FROM Inscripcion i WHERE i.fechaInscripcion = :fechaInscripcion"),
@@ -35,13 +35,13 @@ public class Inscripcion implements Serializable {
     @EmbeddedId
     protected InscripcionPK inscripcionPK;
     @Basic(optional = false)
-    @Column(name = "fecha_inscripcion")
+    @Column(name = "fecha_inscripcion", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaInscripcion;
-    @JoinColumn(name = "id_estudiante", referencedColumnName = "id_estudiante", insertable = false, updatable = false)
+    @JoinColumn(name = "id_estudiante", referencedColumnName = "id_estudiante", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Estudiante estudiante;
-    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta", insertable = false, updatable = false)
+    @JoinColumn(name = "id_oferta", referencedColumnName = "id_oferta", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Ofertas ofertas;
 

@@ -4,10 +4,10 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
 /**
  *
@@ -17,10 +17,10 @@ import javax.persistence.Embeddable;
 public class InscripcionPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "id_estudiante")
+    @Column(name = "id_estudiante", nullable = false)
     private int idEstudiante;
     @Basic(optional = false)
-    @Column(name = "id_oferta")
+    @Column(name = "id_oferta", nullable = false)
     private int idOferta;
 
     public InscripcionPK() {

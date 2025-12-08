@@ -4,12 +4,7 @@
  */
 package controller;
 
-import static controller.Functions.*;
-import java.awt.Color;
-import java.awt.Cursor;
 import javax.swing.JOptionPane;
-import jilmar.PanelRound;
-import model.*;
 import static model.config.*;
 import view.Home;
 
@@ -20,9 +15,9 @@ import view.Home;
 public class HomeController {
     view.Home main;
     
-    private String CARD_OFFERS = "card_controlofertas";
-    private String CARD_COFFERS = "card_controlacademico";
-    private String CARD_USERS = "card_controlusuarios";
+    private static final String CARD_OFFERS = "card_controlofertas";
+    private static final String CARD_COFFERS = "card_controlacademico";
+    private static final String CARD_USERS = "card_controlusuarios";
 
     
     

@@ -4,28 +4,28 @@
  */
 package model;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "ofertas")
+@Table(name = "ofertas", catalog = "bd_gea", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Ofertas.findAll", query = "SELECT o FROM Ofertas o"),
     @NamedQuery(name = "Ofertas.findByIdOferta", query = "SELECT o FROM Ofertas o WHERE o.idOferta = :idOferta"),
@@ -39,22 +39,22 @@ public class Ofertas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_oferta")
+    @Column(name = "id_oferta", nullable = false)
     private Integer idOferta;
     @Basic(optional = false)
-    @Column(name = "codigo_oferta")
+    @Column(name = "codigo_oferta", nullable = false, length = 15)
     private String codigoOferta;
     @Basic(optional = false)
-    @Column(name = "activa_oferta")
+    @Column(name = "activa_oferta", nullable = false, length = 8)
     private String activaOferta;
-    @Column(name = "tipo_oferta")
+    @Column(name = "tipo_oferta", length = 10)
     private String tipoOferta;
     @Column(name = "cupo_oferta")
     private Integer cupoOferta;
-    @Column(name = "duracion_oferta")
+    @Column(name = "duracion_oferta", length = 20)
     private String duracionOferta;
     @Lob
-    @Column(name = "descripcion_oferta")
+    @Column(name = "descripcion_oferta", length = 65535)
     private String descripcionOferta;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOferta")
     private Collection<Participaciones> participacionesCollection;
