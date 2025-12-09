@@ -4,9 +4,13 @@
  */
 package controller;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import static model.config.*;
 import view.Home;
+import view.archetype.ButtonModel;
 
 /**
  *
@@ -29,23 +33,45 @@ public class HomeController {
         buttonsMenu();
         //menuButtons();
     }
-    /*
-    public void test(){
-        JPanel model = new buttonModel()
-        PanelRound boton = new buttonModel().boton;
-        LabelSVG icono = new buttonModel().icono;
-        JLabel titulo = new buttonModel().titulo;
-        
-        main.menupanel.add(model)
-    }
-    */
     
     public void buttonsMenu(){
         buttonOffers(); // boton de visualizador de ofertas académicas
         buttonCOffers(); // boton de diseño de ofertas
         buttonUser(); //boton de usuario
         exitButton(); // boton de guardado
+        
+        
+        // bindMenu(main.boton_ofertas, );
     }
+    
+    /*
+    public void bindMenu(JComponent c, Runnable event){
+        c.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                event.run();
+            }
+            @Override
+            public void mouseEntered(MouseEvent e){
+                Home.setHandCursor(c);
+                Home.setShaded(c, reduv);
+            }
+            @Override
+            public void mouseExited(MouseEvent e){
+                Home.setShaded(c, main.getBackgroundMenu());
+            }
+        });
+    }
+    
+    public void gh(JComponent parent, String card){
+        new Runnable(){
+            @Override
+            public void run() {
+                Home.selectCard((javax.swing.JPanel) parent, card);
+            }
+        };
+    }
+    */
     
     public void buttonOffers () {
         main.boton_ofertas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -81,6 +107,9 @@ public class HomeController {
                 main.selectCard(main.contentpanel, CARD_COFFERS);
                 
                 main.setUsefulButtonVisible(true);
+                
+                buttonHandy(); //probando
+                
             }
             
             @Override
@@ -97,7 +126,25 @@ public class HomeController {
             
         });
     }
-        
+
+    public void buttonHandy(){
+        ButtonModel boton = new ButtonModel("Crear Extensión Académica","svg/add.svg",25);
+
+        if (main.usefulbutton_panel.getComponentCount() == 1) {
+            return;
+        } else {
+            boton.addMouseListener(new java.awt.event.MouseAdapter(){
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent e){
+                    main.setShaded(boton.boton, reduv);
+                }
+            });
+            main.usefulbutton_panel.add(boton);
+        }
+                
+
+    }
+    
     public void buttonUser(){
         main.boton_usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -129,13 +176,12 @@ public class HomeController {
         main.boton_salida.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
-                int confirm = JOptionPane.showConfirmDialog(
-                        null, 
-                        "¿Estás seguro que deseas guardar los cambios en la base de datos?",
-                        "Registrar Cambios",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-                Functions.print(confirm);
+                Home.showConfirmPane(
+                        null,
+                        "¿Esta seguro que desea salir y guardar los cambios hechos?", 
+                        "Salir y Guardar Cambios",
+                        JOptionPane.QUESTION_MESSAGE
+                );
             }
             
             @Override
@@ -152,53 +198,5 @@ public class HomeController {
             
         });
     }
-    
-    /*
-    public void menuButtons(){
         
-        main.boton_cursos.addMouseListener(new java.awt.event.MouseAdapter() {
-            
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e){
-                CardLayout card = (CardLayout) main.contentpanel_ofertas.getLayout();
-                card.show(main.contentpanel_ofertas, "curso");
-            }
-            
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e){
-                main.boton_cursos.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                main.boton_cursos.setBackground(Functions.touchUp(true));
-            }
-            
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e){
-                main.boton_cursos.setBackground(Functions.touchUp(false));
-            }
-        });
-        
-        main.boton_diplomados.addMouseListener(new java.awt.event.MouseAdapter() {
-            
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e){
-                CardLayout card = (CardLayout) main.contentpanel_ofertas.getLayout();
-                card.show(main.contentpanel_ofertas, "diplomado");
-            }
-            
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e){
-                main.boton_diplomados.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                main.boton_diplomados.setBackground(Functions.touchUp(true));
-            }
-            
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e){
-                main.boton_diplomados.setBackground(Functions.touchUp(false));
-            }
-        });
-        
-    }
-    */
-
-
-    
 }

@@ -13,7 +13,7 @@ import java.awt.Color;
 public class config {
     public static String titulo = "Panel de Control: >Base de Datos GEA";
     
-    public static Color menugray = new Color(51, 51, 51); //color barra, si se cambia se cambia el color de la barra
+    public static Color menugray = view.Home.menupanel.getBackground(); //color barra, si se cambia se cambia el color de la barra
     
     public static Color reduv = new Color(195,22,26); // rojo univalluno
 }
