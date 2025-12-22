@@ -4,16 +4,24 @@
  */
 package model;
 
+import jakarta.persistence.EntityManagerFactory;
+import static jakarta.persistence.Persistence.createEntityManagerFactory;
 import java.awt.Color;
+import view.Home;
 
 /**
  *
  * @author Fahrid
  */
 public class config {
-    public static String titulo = "Panel de Control: >Base de Datos GEA";
+    private static final EntityManagerFactory emf = createEntityManagerFactory("pornhub");
     
-    public static Color menugray = view.Home.menupanel.getBackground(); //color barra, si se cambia se cambia el color de la barra
+    public static final String TITULO = "Gestion de Extensión Académica";
     
-    public static Color reduv = new Color(195,22,26); // rojo univalluno
+    public static final Color REDUV = new Color(195,22,26); // rojo univalluno
+
+    public static EntityManagerFactory getEntityManagerFactory() {
+        return emf;
+    }
+  
 }

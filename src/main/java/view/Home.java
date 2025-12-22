@@ -4,6 +4,8 @@
  */
 package view;
 
+import controller.HomeController;
+import controller.LoginController;
 import custom.LabelSVG;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -11,72 +13,95 @@ import java.awt.Cursor;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import view.archetype.ButtonModel;
-
+import view.template.AccessControlButtonModel;
 
 /**
  *
  * @author Fahrid
  */
 public class Home extends javax.swing.JFrame {
-    controller.HomeController controller = new controller.HomeController(this);
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
     
+    public final Login login = new Login(this); //probar quitando >>final<<
+    
+    HomeController homecontrol = new HomeController(this);
 
     /**
      * Creates new form home
      */
     public Home() {
         initComponents();
-        controller.init();
-        setSVG();
-        setUsefulButtonVisible(false);
-    }
-    
-    public void setUsefulButtonVisible(boolean visible){
-        separador_menu.setVisible(visible);
-        usefulbutton_panel.setVisible(visible);
-    }
-
-    public static void setShaded(JComponent boton, Color color){
-        boton.setBackground(color);
+        homecontrol.init();
     }
     
     public  Color getBackgroundMenu(){
         return menupanel.getBackground();
     }
     
-    public static void setHandCursor(JComponent comp){
-        comp.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
     
-    /**
-     @param parent componente padre del cardlayout asignado
-      @param cardname nombre del componente asignado 
-    */
-    public static void selectCard(JPanel parent,String cardname){
-        CardLayout card = (CardLayout) parent.getLayout();
-        card.show(parent, cardname);
-    }
-    
-    public static void showConfirmPane(JComponent parent, Object message, String title, int optiontype){
-        JOptionPane.showConfirmDialog(
-                parent, 
+    public int showConfirmPane(Object message, String title, int optiontype){
+        return JOptionPane.showConfirmDialog(
+                this, 
                 message, 
                 title, 
                 optiontype
         );
     }
     
-    private void setSVG(){
-        setSVG(iconsvg_ofertas, "svg/library.svg", 30);
-        setSVG(iconsvg_cofertas,"svg/assignment.svg",30);
-        setSVG(iconsvg_usuarios,"svg/users.svg", 30);
-        setSVG(iconsvg_salida, "svg/leave.svg", 30);
+    public void showMessagePane(Object message, String title, int type){
+        controller.Functions.print("cacaloca");
+        JOptionPane.showMessageDialog(
+            this, 
+            message, 
+            title, 
+            type
+        );
+    }
+
+    public static AccessControlButtonModel createACBM(String titulo, Color color){
+        AccessControlButtonModel acbm = new AccessControlButtonModel(titulo, color);
+        return acbm;
+    }
+
+    public static void mouseEnteredEvent(JComponent comp, Color col){
+        setHandCursor(comp);
+        setShaded(comp, col);
+    }
+    
+    public static void mouseExitedEvent(JComponent comp, Color col){
+        setShaded(comp, col);
+    }
+    
+    private static void setShaded(JComponent boton, Color color){
+        boton.setBackground(color);
+    }
+    
+    private static void setHandCursor(JComponent comp){
+        comp.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+    
+    /**
+     @param parent componente padre, contenedor de los diferentes cards
+      @param cardname nombre del componente asignado 
+    */
+    public static void selectCard(JPanel parent,String cardname){
+        CardLayout card = (CardLayout) parent.getLayout();
+        card.show(parent, cardname);
     }
 
     public static void setSVG(LabelSVG svg,String dir,int size){
-        svg.setSVGImage(dir, size, size);
+        try {
+            svg.setSVGImage(dir, size, size);
+        } catch (Exception e){
+            System.out.println("No existe ninguna imagen en el directorio: "+dir);
+        }
+    }
+
+    public static void setSVG(LabelSVG svg,String dir, int height, int weight){
+        try {
+            svg.setSVGImage(dir, height, weight);
+        } catch (Exception e){
+            System.out.println("No existe ninguna imagen en el directorio: "+dir);
+        }
     }
 
     /**
@@ -87,8 +112,10 @@ public class Home extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
+        home = new javax.swing.JPanel();
+        homepanel = new javax.swing.JPanel();
+        parentpanel = new javax.swing.JPanel();
         contentpanel = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -121,25 +148,22 @@ public class Home extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
+        accespanel = new javax.swing.JPanel();
+        usuario = new javax.swing.JLabel();
+        accesscontrol = new javax.swing.JPanel();
         menupanel = new javax.swing.JPanel();
-        boton_ofertas = new jilmar.PanelRound();
-        iconsvg_ofertas = new custom.LabelSVG();
-        jLabel1 = new javax.swing.JLabel();
-        boton_cofertas = new jilmar.PanelRound();
-        iconsvg_cofertas = new custom.LabelSVG();
-        jLabel6 = new javax.swing.JLabel();
-        boton_usuarios = new jilmar.PanelRound();
-        iconsvg_usuarios = new custom.LabelSVG();
-        jLabel7 = new javax.swing.JLabel();
-        boton_salida = new jilmar.PanelRound();
-        iconsvg_salida = new custom.LabelSVG();
-        jLabel8 = new javax.swing.JLabel();
-        usefulbutton_panel = new javax.swing.JPanel();
-        separador_menu = new javax.swing.JSeparator();
+        buttonbox = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.CardLayout());
 
-        contentpanel.setBackground(new java.awt.Color(255, 255, 255));
+        home.setLayout(new java.awt.CardLayout());
+
+        homepanel.setLayout(new java.awt.BorderLayout());
+
+        parentpanel.setBackground(new java.awt.Color(255, 255, 255));
+        parentpanel.setLayout(new java.awt.BorderLayout());
+
         contentpanel.setLayout(new java.awt.CardLayout());
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -151,16 +175,16 @@ public class Home extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(234, 234, 234)
                 .addComponent(jLabel12)
-                .addContainerGap(464, Short.MAX_VALUE))
+                .addContainerGap(236, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel12)
-                .addContainerGap(531, Short.MAX_VALUE))
+                .addGap(211, 211, 211))
         );
 
         contentpanel.add(jPanel9, "card5");
@@ -272,7 +296,7 @@ public class Home extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
         );
 
         contentpanel.add(jPanel1, "ofertas_extension_academica");
@@ -404,7 +428,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -429,7 +453,7 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -445,125 +469,84 @@ public class Home extends javax.swing.JFrame {
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 562, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         contentpanel.add(jPanel8, "usuarios_sistema");
 
-        getContentPane().add(contentpanel, java.awt.BorderLayout.CENTER);
+        parentpanel.add(contentpanel, java.awt.BorderLayout.CENTER);
+
+        accespanel.setMinimumSize(new java.awt.Dimension(0, 45));
+        accespanel.setPreferredSize(new java.awt.Dimension(760, 50));
+
+        usuario.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        usuario.setText("jLabel1");
+
+        accesscontrol.setPreferredSize(new java.awt.Dimension(209, 50));
+        accesscontrol.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 0));
+
+        javax.swing.GroupLayout accespanelLayout = new javax.swing.GroupLayout(accespanel);
+        accespanel.setLayout(accespanelLayout);
+        accespanelLayout.setHorizontalGroup(
+            accespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(accespanelLayout.createSequentialGroup()
+                .addContainerGap(138, Short.MAX_VALUE)
+                .addComponent(usuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addComponent(accesscontrol, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        accespanelLayout.setVerticalGroup(
+            accespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(accesscontrol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(accespanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(usuario)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        parentpanel.add(accespanel, java.awt.BorderLayout.NORTH);
+
+        homepanel.add(parentpanel, java.awt.BorderLayout.CENTER);
 
         menupanel.setBackground(new java.awt.Color(51, 51, 51));
         menupanel.setPreferredSize(new java.awt.Dimension(200, 540));
 
-        boton_ofertas.setBackground(model.config.menugray);
-        boton_ofertas.setPreferredSize(new java.awt.Dimension(175, 50));
-        boton_ofertas.setRoundBottomLeft(10);
-        boton_ofertas.setRoundBottomRight(10);
-        boton_ofertas.setRoundTopLeft(10);
-        boton_ofertas.setRoundTopRight(10);
-        boton_ofertas.setLayout(new java.awt.BorderLayout());
+        buttonbox.setBackground(menupanel.getBackground());
+        buttonbox.setPreferredSize(new java.awt.Dimension(175, 550));
 
-        iconsvg_ofertas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        iconsvg_ofertas.setPreferredSize(new java.awt.Dimension(45, 45));
-        boton_ofertas.add(iconsvg_ofertas, java.awt.BorderLayout.LINE_START);
-
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("<html>Ofertas de Extensión Académica</html>");
-        boton_ofertas.add(jLabel1, java.awt.BorderLayout.CENTER);
-
-        boton_cofertas.setBackground(model.config.menugray);
-        boton_cofertas.setPreferredSize(new java.awt.Dimension(175, 50));
-        boton_cofertas.setRoundBottomLeft(10);
-        boton_cofertas.setRoundBottomRight(10);
-        boton_cofertas.setRoundTopLeft(10);
-        boton_cofertas.setRoundTopRight(10);
-        boton_cofertas.setLayout(new java.awt.BorderLayout());
-
-        iconsvg_cofertas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        iconsvg_cofertas.setPreferredSize(new java.awt.Dimension(45, 45));
-        boton_cofertas.add(iconsvg_cofertas, java.awt.BorderLayout.LINE_START);
-
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("<html>Creaciones Académicas</html>");
-        boton_cofertas.add(jLabel6, java.awt.BorderLayout.CENTER);
-
-        boton_usuarios.setBackground(model.config.menugray);
-        boton_usuarios.setPreferredSize(new java.awt.Dimension(175, 50));
-        boton_usuarios.setRoundBottomLeft(10);
-        boton_usuarios.setRoundBottomRight(10);
-        boton_usuarios.setRoundTopLeft(10);
-        boton_usuarios.setRoundTopRight(10);
-        boton_usuarios.setLayout(new java.awt.BorderLayout());
-
-        iconsvg_usuarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        iconsvg_usuarios.setPreferredSize(new java.awt.Dimension(45, 45));
-        boton_usuarios.add(iconsvg_usuarios, java.awt.BorderLayout.LINE_START);
-
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("<html>Usuarios del Sistema</html>");
-        boton_usuarios.add(jLabel7, java.awt.BorderLayout.CENTER);
-
-        boton_salida.setBackground(model.config.menugray);
-        boton_salida.setPreferredSize(new java.awt.Dimension(175, 50));
-        boton_salida.setRoundBottomLeft(10);
-        boton_salida.setRoundBottomRight(10);
-        boton_salida.setRoundTopLeft(10);
-        boton_salida.setRoundTopRight(10);
-        boton_salida.setLayout(new java.awt.BorderLayout());
-
-        iconsvg_salida.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        iconsvg_salida.setPreferredSize(new java.awt.Dimension(45, 45));
-        boton_salida.add(iconsvg_salida, java.awt.BorderLayout.LINE_START);
-
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("<html>Salir y guardar cambios</html>");
-        boton_salida.add(jLabel8, java.awt.BorderLayout.CENTER);
-
-        usefulbutton_panel.setBackground(new java.awt.Color(255, 0, 0));
-        usefulbutton_panel.setOpaque(false);
-        usefulbutton_panel.setPreferredSize(new java.awt.Dimension(13, 198));
-        usefulbutton_panel.setLayout(new java.awt.GridLayout(10, 1, 15, 15));
-
-        separador_menu.setForeground(new java.awt.Color(102, 102, 102));
-        separador_menu.setPreferredSize(new java.awt.Dimension(175, 3));
+        javax.swing.GroupLayout buttonboxLayout = new javax.swing.GroupLayout(buttonbox);
+        buttonbox.setLayout(buttonboxLayout);
+        buttonboxLayout.setHorizontalGroup(
+            buttonboxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 175, Short.MAX_VALUE)
+        );
+        buttonboxLayout.setVerticalGroup(
+            buttonboxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 547, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout menupanelLayout = new javax.swing.GroupLayout(menupanel);
         menupanel.setLayout(menupanelLayout);
         menupanelLayout.setHorizontalGroup(
             menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menupanelLayout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
-                .addGroup(menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(boton_cofertas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(boton_ofertas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(boton_usuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(boton_salida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(usefulbutton_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(17, Short.MAX_VALUE))
-            .addGroup(menupanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(separador_menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(buttonbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         menupanelLayout.setVerticalGroup(
             menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menupanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(boton_ofertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(boton_cofertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(boton_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addComponent(separador_menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usefulbutton_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(boton_salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonbox, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(menupanel, java.awt.BorderLayout.WEST);
+        homepanel.add(menupanel, java.awt.BorderLayout.WEST);
+
+        home.add(homepanel, "homepanel");
+
+        getContentPane().add(home, "card4");
 
         pack();
         setLocationRelativeTo(null);
@@ -575,21 +558,17 @@ public class Home extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public jilmar.PanelRound boton_cofertas;
+    private javax.swing.JPanel accespanel;
+    public javax.swing.JPanel accesscontrol;
     public jilmar.PanelRound boton_cursos;
     public jilmar.PanelRound boton_diplomados;
-    public jilmar.PanelRound boton_ofertas;
-    public jilmar.PanelRound boton_salida;
     public jilmar.PanelRound boton_seminarios;
     public jilmar.PanelRound boton_talleres;
-    public jilmar.PanelRound boton_usuarios;
+    private javax.swing.JPanel buttonbox;
     public javax.swing.JPanel contentpanel;
     public javax.swing.JPanel contentpanel_ofertas;
-    public custom.LabelSVG iconsvg_cofertas;
-    public custom.LabelSVG iconsvg_ofertas;
-    public custom.LabelSVG iconsvg_salida;
-    public custom.LabelSVG iconsvg_usuarios;
-    private javax.swing.JLabel jLabel1;
+    public javax.swing.JPanel home;
+    private javax.swing.JPanel homepanel;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -599,9 +578,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -620,7 +596,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     public static javax.swing.JPanel menupanel;
-    public javax.swing.JSeparator separador_menu;
-    public javax.swing.JPanel usefulbutton_panel;
+    private javax.swing.JPanel parentpanel;
+    public javax.swing.JLabel usuario;
     // End of variables declaration//GEN-END:variables
 }

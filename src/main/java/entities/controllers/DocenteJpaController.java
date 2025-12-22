@@ -2,25 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller;
+package entities.controllers;
 
-import controller.exceptions.IllegalOrphanException;
-import controller.exceptions.NonexistentEntityException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import entities.Docente;
 import java.io.Serializable;
 import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import model.Usuario;
-import model.Participaciones;
+import entities.Usuario;
+import entities.controllers.exceptions.IllegalOrphanException;
+import entities.controllers.exceptions.NonexistentEntityException;
+import entities.controllers.exceptions.PreexistingEntityException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import model.Ofertas;
-import model.Certificaciones;
-import model.Docente;
 
 /**
  *
@@ -37,25 +34,16 @@ public class DocenteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Docente docente) throws IllegalOrphanException {
-        if (docente.getParticipacionesCollection() == null) {
-            docente.setParticipacionesCollection(new ArrayList<Participaciones>());
-        }
-        if (docente.getOfertasCollection() == null) {
-            docente.setOfertasCollection(new ArrayList<Ofertas>());
-        }
-        if (docente.getCertificacionesCollection() == null) {
-            docente.setCertificacionesCollection(new ArrayList<Certificaciones>());
-        }
+    public void create(Docente docente) throws IllegalOrphanException, PreexistingEntityException, Exception {
         List<String> illegalOrphanMessages = null;
-        Usuario idUsuarioOrphanCheck = docente.getIdUsuario();
-        if (idUsuarioOrphanCheck != null) {
-            Docente oldDocenteOfIdUsuario = idUsuarioOrphanCheck.getDocente();
-            if (oldDocenteOfIdUsuario != null) {
+        Usuario usuarioOrphanCheck = docente.getUsuario();
+        if (usuarioOrphanCheck != null) {
+            Docente oldDocenteOfUsuario = usuarioOrphanCheck.getDocente();
+            if (oldDocenteOfUsuario != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("The Usuario " + idUsuarioOrphanCheck + " already has an item of type Docente whose idUsuario column cannot be null. Please make another selection for the idUsuario field.");
+                illegalOrphanMessages.add("The Usuario " + usuarioOrphanCheck + " already has an item of type Docente whose usuario column cannot be null. Please make another selection for the usuario field.");
             }
         }
         if (illegalOrphanMessages != null) {
@@ -65,62 +53,22 @@ public class DocenteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario idUsuario = docente.getIdUsuario();
-            if (idUsuario != null) {
-                idUsuario = em.getReference(idUsuario.getClass(), idUsuario.getIdUsuario());
-                docente.setIdUsuario(idUsuario);
+            Usuario usuario = docente.getUsuario();
+            if (usuario != null) {
+                usuario = em.getReference(usuario.getClass(), usuario.getNombreUsuario());
+                docente.setUsuario(usuario);
             }
-            Collection<Participaciones> attachedParticipacionesCollection = new ArrayList<Participaciones>();
-            for (Participaciones participacionesCollectionParticipacionesToAttach : docente.getParticipacionesCollection()) {
-                participacionesCollectionParticipacionesToAttach = em.getReference(participacionesCollectionParticipacionesToAttach.getClass(), participacionesCollectionParticipacionesToAttach.getIdParticipacion());
-                attachedParticipacionesCollection.add(participacionesCollectionParticipacionesToAttach);
-            }
-            docente.setParticipacionesCollection(attachedParticipacionesCollection);
-            Collection<Ofertas> attachedOfertasCollection = new ArrayList<Ofertas>();
-            for (Ofertas ofertasCollectionOfertasToAttach : docente.getOfertasCollection()) {
-                ofertasCollectionOfertasToAttach = em.getReference(ofertasCollectionOfertasToAttach.getClass(), ofertasCollectionOfertasToAttach.getIdOferta());
-                attachedOfertasCollection.add(ofertasCollectionOfertasToAttach);
-            }
-            docente.setOfertasCollection(attachedOfertasCollection);
-            Collection<Certificaciones> attachedCertificacionesCollection = new ArrayList<Certificaciones>();
-            for (Certificaciones certificacionesCollectionCertificacionesToAttach : docente.getCertificacionesCollection()) {
-                certificacionesCollectionCertificacionesToAttach = em.getReference(certificacionesCollectionCertificacionesToAttach.getClass(), certificacionesCollectionCertificacionesToAttach.getIdCertificado());
-                attachedCertificacionesCollection.add(certificacionesCollectionCertificacionesToAttach);
-            }
-            docente.setCertificacionesCollection(attachedCertificacionesCollection);
             em.persist(docente);
-            if (idUsuario != null) {
-                idUsuario.setDocente(docente);
-                idUsuario = em.merge(idUsuario);
-            }
-            for (Participaciones participacionesCollectionParticipaciones : docente.getParticipacionesCollection()) {
-                Docente oldIdDocenteOfParticipacionesCollectionParticipaciones = participacionesCollectionParticipaciones.getIdDocente();
-                participacionesCollectionParticipaciones.setIdDocente(docente);
-                participacionesCollectionParticipaciones = em.merge(participacionesCollectionParticipaciones);
-                if (oldIdDocenteOfParticipacionesCollectionParticipaciones != null) {
-                    oldIdDocenteOfParticipacionesCollectionParticipaciones.getParticipacionesCollection().remove(participacionesCollectionParticipaciones);
-                    oldIdDocenteOfParticipacionesCollectionParticipaciones = em.merge(oldIdDocenteOfParticipacionesCollectionParticipaciones);
-                }
-            }
-            for (Ofertas ofertasCollectionOfertas : docente.getOfertasCollection()) {
-                Docente oldIdDocenteOfOfertasCollectionOfertas = ofertasCollectionOfertas.getIdDocente();
-                ofertasCollectionOfertas.setIdDocente(docente);
-                ofertasCollectionOfertas = em.merge(ofertasCollectionOfertas);
-                if (oldIdDocenteOfOfertasCollectionOfertas != null) {
-                    oldIdDocenteOfOfertasCollectionOfertas.getOfertasCollection().remove(ofertasCollectionOfertas);
-                    oldIdDocenteOfOfertasCollectionOfertas = em.merge(oldIdDocenteOfOfertasCollectionOfertas);
-                }
-            }
-            for (Certificaciones certificacionesCollectionCertificaciones : docente.getCertificacionesCollection()) {
-                Docente oldIdDocenteOfCertificacionesCollectionCertificaciones = certificacionesCollectionCertificaciones.getIdDocente();
-                certificacionesCollectionCertificaciones.setIdDocente(docente);
-                certificacionesCollectionCertificaciones = em.merge(certificacionesCollectionCertificaciones);
-                if (oldIdDocenteOfCertificacionesCollectionCertificaciones != null) {
-                    oldIdDocenteOfCertificacionesCollectionCertificaciones.getCertificacionesCollection().remove(certificacionesCollectionCertificaciones);
-                    oldIdDocenteOfCertificacionesCollectionCertificaciones = em.merge(oldIdDocenteOfCertificacionesCollectionCertificaciones);
-                }
+            if (usuario != null) {
+                usuario.setDocente(docente);
+                usuario = em.merge(usuario);
             }
             em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findDocente(docente.getDni()) != null) {
+                throw new PreexistingEntityException("Docente " + docente + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -133,122 +81,40 @@ public class DocenteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Docente persistentDocente = em.find(Docente.class, docente.getIdDocente());
-            Usuario idUsuarioOld = persistentDocente.getIdUsuario();
-            Usuario idUsuarioNew = docente.getIdUsuario();
-            Collection<Participaciones> participacionesCollectionOld = persistentDocente.getParticipacionesCollection();
-            Collection<Participaciones> participacionesCollectionNew = docente.getParticipacionesCollection();
-            Collection<Ofertas> ofertasCollectionOld = persistentDocente.getOfertasCollection();
-            Collection<Ofertas> ofertasCollectionNew = docente.getOfertasCollection();
-            Collection<Certificaciones> certificacionesCollectionOld = persistentDocente.getCertificacionesCollection();
-            Collection<Certificaciones> certificacionesCollectionNew = docente.getCertificacionesCollection();
+            Docente persistentDocente = em.find(Docente.class, docente.getDni());
+            Usuario usuarioOld = persistentDocente.getUsuario();
+            Usuario usuarioNew = docente.getUsuario();
             List<String> illegalOrphanMessages = null;
-            if (idUsuarioNew != null && !idUsuarioNew.equals(idUsuarioOld)) {
-                Docente oldDocenteOfIdUsuario = idUsuarioNew.getDocente();
-                if (oldDocenteOfIdUsuario != null) {
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                Docente oldDocenteOfUsuario = usuarioNew.getDocente();
+                if (oldDocenteOfUsuario != null) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("The Usuario " + idUsuarioNew + " already has an item of type Docente whose idUsuario column cannot be null. Please make another selection for the idUsuario field.");
-                }
-            }
-            for (Participaciones participacionesCollectionOldParticipaciones : participacionesCollectionOld) {
-                if (!participacionesCollectionNew.contains(participacionesCollectionOldParticipaciones)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Participaciones " + participacionesCollectionOldParticipaciones + " since its idDocente field is not nullable.");
-                }
-            }
-            for (Certificaciones certificacionesCollectionOldCertificaciones : certificacionesCollectionOld) {
-                if (!certificacionesCollectionNew.contains(certificacionesCollectionOldCertificaciones)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Certificaciones " + certificacionesCollectionOldCertificaciones + " since its idDocente field is not nullable.");
+                    illegalOrphanMessages.add("The Usuario " + usuarioNew + " already has an item of type Docente whose usuario column cannot be null. Please make another selection for the usuario field.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (idUsuarioNew != null) {
-                idUsuarioNew = em.getReference(idUsuarioNew.getClass(), idUsuarioNew.getIdUsuario());
-                docente.setIdUsuario(idUsuarioNew);
+            if (usuarioNew != null) {
+                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getNombreUsuario());
+                docente.setUsuario(usuarioNew);
             }
-            Collection<Participaciones> attachedParticipacionesCollectionNew = new ArrayList<Participaciones>();
-            for (Participaciones participacionesCollectionNewParticipacionesToAttach : participacionesCollectionNew) {
-                participacionesCollectionNewParticipacionesToAttach = em.getReference(participacionesCollectionNewParticipacionesToAttach.getClass(), participacionesCollectionNewParticipacionesToAttach.getIdParticipacion());
-                attachedParticipacionesCollectionNew.add(participacionesCollectionNewParticipacionesToAttach);
-            }
-            participacionesCollectionNew = attachedParticipacionesCollectionNew;
-            docente.setParticipacionesCollection(participacionesCollectionNew);
-            Collection<Ofertas> attachedOfertasCollectionNew = new ArrayList<Ofertas>();
-            for (Ofertas ofertasCollectionNewOfertasToAttach : ofertasCollectionNew) {
-                ofertasCollectionNewOfertasToAttach = em.getReference(ofertasCollectionNewOfertasToAttach.getClass(), ofertasCollectionNewOfertasToAttach.getIdOferta());
-                attachedOfertasCollectionNew.add(ofertasCollectionNewOfertasToAttach);
-            }
-            ofertasCollectionNew = attachedOfertasCollectionNew;
-            docente.setOfertasCollection(ofertasCollectionNew);
-            Collection<Certificaciones> attachedCertificacionesCollectionNew = new ArrayList<Certificaciones>();
-            for (Certificaciones certificacionesCollectionNewCertificacionesToAttach : certificacionesCollectionNew) {
-                certificacionesCollectionNewCertificacionesToAttach = em.getReference(certificacionesCollectionNewCertificacionesToAttach.getClass(), certificacionesCollectionNewCertificacionesToAttach.getIdCertificado());
-                attachedCertificacionesCollectionNew.add(certificacionesCollectionNewCertificacionesToAttach);
-            }
-            certificacionesCollectionNew = attachedCertificacionesCollectionNew;
-            docente.setCertificacionesCollection(certificacionesCollectionNew);
             docente = em.merge(docente);
-            if (idUsuarioOld != null && !idUsuarioOld.equals(idUsuarioNew)) {
-                idUsuarioOld.setDocente(null);
-                idUsuarioOld = em.merge(idUsuarioOld);
+            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
+                usuarioOld.setDocente(null);
+                usuarioOld = em.merge(usuarioOld);
             }
-            if (idUsuarioNew != null && !idUsuarioNew.equals(idUsuarioOld)) {
-                idUsuarioNew.setDocente(docente);
-                idUsuarioNew = em.merge(idUsuarioNew);
-            }
-            for (Participaciones participacionesCollectionNewParticipaciones : participacionesCollectionNew) {
-                if (!participacionesCollectionOld.contains(participacionesCollectionNewParticipaciones)) {
-                    Docente oldIdDocenteOfParticipacionesCollectionNewParticipaciones = participacionesCollectionNewParticipaciones.getIdDocente();
-                    participacionesCollectionNewParticipaciones.setIdDocente(docente);
-                    participacionesCollectionNewParticipaciones = em.merge(participacionesCollectionNewParticipaciones);
-                    if (oldIdDocenteOfParticipacionesCollectionNewParticipaciones != null && !oldIdDocenteOfParticipacionesCollectionNewParticipaciones.equals(docente)) {
-                        oldIdDocenteOfParticipacionesCollectionNewParticipaciones.getParticipacionesCollection().remove(participacionesCollectionNewParticipaciones);
-                        oldIdDocenteOfParticipacionesCollectionNewParticipaciones = em.merge(oldIdDocenteOfParticipacionesCollectionNewParticipaciones);
-                    }
-                }
-            }
-            for (Ofertas ofertasCollectionOldOfertas : ofertasCollectionOld) {
-                if (!ofertasCollectionNew.contains(ofertasCollectionOldOfertas)) {
-                    ofertasCollectionOldOfertas.setIdDocente(null);
-                    ofertasCollectionOldOfertas = em.merge(ofertasCollectionOldOfertas);
-                }
-            }
-            for (Ofertas ofertasCollectionNewOfertas : ofertasCollectionNew) {
-                if (!ofertasCollectionOld.contains(ofertasCollectionNewOfertas)) {
-                    Docente oldIdDocenteOfOfertasCollectionNewOfertas = ofertasCollectionNewOfertas.getIdDocente();
-                    ofertasCollectionNewOfertas.setIdDocente(docente);
-                    ofertasCollectionNewOfertas = em.merge(ofertasCollectionNewOfertas);
-                    if (oldIdDocenteOfOfertasCollectionNewOfertas != null && !oldIdDocenteOfOfertasCollectionNewOfertas.equals(docente)) {
-                        oldIdDocenteOfOfertasCollectionNewOfertas.getOfertasCollection().remove(ofertasCollectionNewOfertas);
-                        oldIdDocenteOfOfertasCollectionNewOfertas = em.merge(oldIdDocenteOfOfertasCollectionNewOfertas);
-                    }
-                }
-            }
-            for (Certificaciones certificacionesCollectionNewCertificaciones : certificacionesCollectionNew) {
-                if (!certificacionesCollectionOld.contains(certificacionesCollectionNewCertificaciones)) {
-                    Docente oldIdDocenteOfCertificacionesCollectionNewCertificaciones = certificacionesCollectionNewCertificaciones.getIdDocente();
-                    certificacionesCollectionNewCertificaciones.setIdDocente(docente);
-                    certificacionesCollectionNewCertificaciones = em.merge(certificacionesCollectionNewCertificaciones);
-                    if (oldIdDocenteOfCertificacionesCollectionNewCertificaciones != null && !oldIdDocenteOfCertificacionesCollectionNewCertificaciones.equals(docente)) {
-                        oldIdDocenteOfCertificacionesCollectionNewCertificaciones.getCertificacionesCollection().remove(certificacionesCollectionNewCertificaciones);
-                        oldIdDocenteOfCertificacionesCollectionNewCertificaciones = em.merge(oldIdDocenteOfCertificacionesCollectionNewCertificaciones);
-                    }
-                }
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                usuarioNew.setDocente(docente);
+                usuarioNew = em.merge(usuarioNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = docente.getIdDocente();
+                String id = docente.getDni();
                 if (findDocente(id) == null) {
                     throw new NonexistentEntityException("The docente with id " + id + " no longer exists.");
                 }
@@ -261,7 +127,7 @@ public class DocenteJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -269,37 +135,14 @@ public class DocenteJpaController implements Serializable {
             Docente docente;
             try {
                 docente = em.getReference(Docente.class, id);
-                docente.getIdDocente();
+                docente.getDni();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The docente with id " + id + " no longer exists.", enfe);
             }
-            List<String> illegalOrphanMessages = null;
-            Collection<Participaciones> participacionesCollectionOrphanCheck = docente.getParticipacionesCollection();
-            for (Participaciones participacionesCollectionOrphanCheckParticipaciones : participacionesCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Docente (" + docente + ") cannot be destroyed since the Participaciones " + participacionesCollectionOrphanCheckParticipaciones + " in its participacionesCollection field has a non-nullable idDocente field.");
-            }
-            Collection<Certificaciones> certificacionesCollectionOrphanCheck = docente.getCertificacionesCollection();
-            for (Certificaciones certificacionesCollectionOrphanCheckCertificaciones : certificacionesCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Docente (" + docente + ") cannot be destroyed since the Certificaciones " + certificacionesCollectionOrphanCheckCertificaciones + " in its certificacionesCollection field has a non-nullable idDocente field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            Usuario idUsuario = docente.getIdUsuario();
-            if (idUsuario != null) {
-                idUsuario.setDocente(null);
-                idUsuario = em.merge(idUsuario);
-            }
-            Collection<Ofertas> ofertasCollection = docente.getOfertasCollection();
-            for (Ofertas ofertasCollectionOfertas : ofertasCollection) {
-                ofertasCollectionOfertas.setIdDocente(null);
-                ofertasCollectionOfertas = em.merge(ofertasCollectionOfertas);
+            Usuario usuario = docente.getUsuario();
+            if (usuario != null) {
+                usuario.setDocente(null);
+                usuario = em.merge(usuario);
             }
             em.remove(docente);
             em.getTransaction().commit();
@@ -334,7 +177,7 @@ public class DocenteJpaController implements Serializable {
         }
     }
 
-    public Docente findDocente(Integer id) {
+    public Docente findDocente(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Docente.class, id);

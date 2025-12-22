@@ -2,25 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller;
+package entities.controllers;
 
-import controller.exceptions.IllegalOrphanException;
-import controller.exceptions.NonexistentEntityException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import entities.Estudiante;
 import java.io.Serializable;
 import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import model.Usuario;
-import model.Participaciones;
+import entities.Usuario;
+import entities.controllers.exceptions.IllegalOrphanException;
+import entities.controllers.exceptions.NonexistentEntityException;
+import entities.controllers.exceptions.PreexistingEntityException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import model.Inscripcion;
-import model.Certificaciones;
-import model.Estudiante;
 
 /**
  *
@@ -37,25 +34,16 @@ public class EstudianteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Estudiante estudiante) throws IllegalOrphanException {
-        if (estudiante.getParticipacionesCollection() == null) {
-            estudiante.setParticipacionesCollection(new ArrayList<Participaciones>());
-        }
-        if (estudiante.getInscripcionCollection() == null) {
-            estudiante.setInscripcionCollection(new ArrayList<Inscripcion>());
-        }
-        if (estudiante.getCertificacionesCollection() == null) {
-            estudiante.setCertificacionesCollection(new ArrayList<Certificaciones>());
-        }
+    public void create(Estudiante estudiante) throws IllegalOrphanException, PreexistingEntityException, Exception {
         List<String> illegalOrphanMessages = null;
-        Usuario idUsuarioOrphanCheck = estudiante.getIdUsuario();
-        if (idUsuarioOrphanCheck != null) {
-            Estudiante oldEstudianteOfIdUsuario = idUsuarioOrphanCheck.getEstudiante();
-            if (oldEstudianteOfIdUsuario != null) {
+        Usuario usuarioOrphanCheck = estudiante.getUsuario();
+        if (usuarioOrphanCheck != null) {
+            Estudiante oldEstudianteOfUsuario = usuarioOrphanCheck.getEstudiante();
+            if (oldEstudianteOfUsuario != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("The Usuario " + idUsuarioOrphanCheck + " already has an item of type Estudiante whose idUsuario column cannot be null. Please make another selection for the idUsuario field.");
+                illegalOrphanMessages.add("The Usuario " + usuarioOrphanCheck + " already has an item of type Estudiante whose usuario column cannot be null. Please make another selection for the usuario field.");
             }
         }
         if (illegalOrphanMessages != null) {
@@ -65,62 +53,22 @@ public class EstudianteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario idUsuario = estudiante.getIdUsuario();
-            if (idUsuario != null) {
-                idUsuario = em.getReference(idUsuario.getClass(), idUsuario.getIdUsuario());
-                estudiante.setIdUsuario(idUsuario);
+            Usuario usuario = estudiante.getUsuario();
+            if (usuario != null) {
+                usuario = em.getReference(usuario.getClass(), usuario.getNombreUsuario());
+                estudiante.setUsuario(usuario);
             }
-            Collection<Participaciones> attachedParticipacionesCollection = new ArrayList<Participaciones>();
-            for (Participaciones participacionesCollectionParticipacionesToAttach : estudiante.getParticipacionesCollection()) {
-                participacionesCollectionParticipacionesToAttach = em.getReference(participacionesCollectionParticipacionesToAttach.getClass(), participacionesCollectionParticipacionesToAttach.getIdParticipacion());
-                attachedParticipacionesCollection.add(participacionesCollectionParticipacionesToAttach);
-            }
-            estudiante.setParticipacionesCollection(attachedParticipacionesCollection);
-            Collection<Inscripcion> attachedInscripcionCollection = new ArrayList<Inscripcion>();
-            for (Inscripcion inscripcionCollectionInscripcionToAttach : estudiante.getInscripcionCollection()) {
-                inscripcionCollectionInscripcionToAttach = em.getReference(inscripcionCollectionInscripcionToAttach.getClass(), inscripcionCollectionInscripcionToAttach.getInscripcionPK());
-                attachedInscripcionCollection.add(inscripcionCollectionInscripcionToAttach);
-            }
-            estudiante.setInscripcionCollection(attachedInscripcionCollection);
-            Collection<Certificaciones> attachedCertificacionesCollection = new ArrayList<Certificaciones>();
-            for (Certificaciones certificacionesCollectionCertificacionesToAttach : estudiante.getCertificacionesCollection()) {
-                certificacionesCollectionCertificacionesToAttach = em.getReference(certificacionesCollectionCertificacionesToAttach.getClass(), certificacionesCollectionCertificacionesToAttach.getIdCertificado());
-                attachedCertificacionesCollection.add(certificacionesCollectionCertificacionesToAttach);
-            }
-            estudiante.setCertificacionesCollection(attachedCertificacionesCollection);
             em.persist(estudiante);
-            if (idUsuario != null) {
-                idUsuario.setEstudiante(estudiante);
-                idUsuario = em.merge(idUsuario);
-            }
-            for (Participaciones participacionesCollectionParticipaciones : estudiante.getParticipacionesCollection()) {
-                Estudiante oldIdEstudianteOfParticipacionesCollectionParticipaciones = participacionesCollectionParticipaciones.getIdEstudiante();
-                participacionesCollectionParticipaciones.setIdEstudiante(estudiante);
-                participacionesCollectionParticipaciones = em.merge(participacionesCollectionParticipaciones);
-                if (oldIdEstudianteOfParticipacionesCollectionParticipaciones != null) {
-                    oldIdEstudianteOfParticipacionesCollectionParticipaciones.getParticipacionesCollection().remove(participacionesCollectionParticipaciones);
-                    oldIdEstudianteOfParticipacionesCollectionParticipaciones = em.merge(oldIdEstudianteOfParticipacionesCollectionParticipaciones);
-                }
-            }
-            for (Inscripcion inscripcionCollectionInscripcion : estudiante.getInscripcionCollection()) {
-                Estudiante oldEstudianteOfInscripcionCollectionInscripcion = inscripcionCollectionInscripcion.getEstudiante();
-                inscripcionCollectionInscripcion.setEstudiante(estudiante);
-                inscripcionCollectionInscripcion = em.merge(inscripcionCollectionInscripcion);
-                if (oldEstudianteOfInscripcionCollectionInscripcion != null) {
-                    oldEstudianteOfInscripcionCollectionInscripcion.getInscripcionCollection().remove(inscripcionCollectionInscripcion);
-                    oldEstudianteOfInscripcionCollectionInscripcion = em.merge(oldEstudianteOfInscripcionCollectionInscripcion);
-                }
-            }
-            for (Certificaciones certificacionesCollectionCertificaciones : estudiante.getCertificacionesCollection()) {
-                Estudiante oldIdEstudianteOfCertificacionesCollectionCertificaciones = certificacionesCollectionCertificaciones.getIdEstudiante();
-                certificacionesCollectionCertificaciones.setIdEstudiante(estudiante);
-                certificacionesCollectionCertificaciones = em.merge(certificacionesCollectionCertificaciones);
-                if (oldIdEstudianteOfCertificacionesCollectionCertificaciones != null) {
-                    oldIdEstudianteOfCertificacionesCollectionCertificaciones.getCertificacionesCollection().remove(certificacionesCollectionCertificaciones);
-                    oldIdEstudianteOfCertificacionesCollectionCertificaciones = em.merge(oldIdEstudianteOfCertificacionesCollectionCertificaciones);
-                }
+            if (usuario != null) {
+                usuario.setEstudiante(estudiante);
+                usuario = em.merge(usuario);
             }
             em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findEstudiante(estudiante.getDni()) != null) {
+                throw new PreexistingEntityException("Estudiante " + estudiante + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -133,124 +81,40 @@ public class EstudianteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Estudiante persistentEstudiante = em.find(Estudiante.class, estudiante.getIdEstudiante());
-            Usuario idUsuarioOld = persistentEstudiante.getIdUsuario();
-            Usuario idUsuarioNew = estudiante.getIdUsuario();
-            Collection<Participaciones> participacionesCollectionOld = persistentEstudiante.getParticipacionesCollection();
-            Collection<Participaciones> participacionesCollectionNew = estudiante.getParticipacionesCollection();
-            Collection<Inscripcion> inscripcionCollectionOld = persistentEstudiante.getInscripcionCollection();
-            Collection<Inscripcion> inscripcionCollectionNew = estudiante.getInscripcionCollection();
-            Collection<Certificaciones> certificacionesCollectionOld = persistentEstudiante.getCertificacionesCollection();
-            Collection<Certificaciones> certificacionesCollectionNew = estudiante.getCertificacionesCollection();
+            Estudiante persistentEstudiante = em.find(Estudiante.class, estudiante.getDni());
+            Usuario usuarioOld = persistentEstudiante.getUsuario();
+            Usuario usuarioNew = estudiante.getUsuario();
             List<String> illegalOrphanMessages = null;
-            if (idUsuarioNew != null && !idUsuarioNew.equals(idUsuarioOld)) {
-                Estudiante oldEstudianteOfIdUsuario = idUsuarioNew.getEstudiante();
-                if (oldEstudianteOfIdUsuario != null) {
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                Estudiante oldEstudianteOfUsuario = usuarioNew.getEstudiante();
+                if (oldEstudianteOfUsuario != null) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("The Usuario " + idUsuarioNew + " already has an item of type Estudiante whose idUsuario column cannot be null. Please make another selection for the idUsuario field.");
-                }
-            }
-            for (Participaciones participacionesCollectionOldParticipaciones : participacionesCollectionOld) {
-                if (!participacionesCollectionNew.contains(participacionesCollectionOldParticipaciones)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Participaciones " + participacionesCollectionOldParticipaciones + " since its idEstudiante field is not nullable.");
-                }
-            }
-            for (Inscripcion inscripcionCollectionOldInscripcion : inscripcionCollectionOld) {
-                if (!inscripcionCollectionNew.contains(inscripcionCollectionOldInscripcion)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Inscripcion " + inscripcionCollectionOldInscripcion + " since its estudiante field is not nullable.");
-                }
-            }
-            for (Certificaciones certificacionesCollectionOldCertificaciones : certificacionesCollectionOld) {
-                if (!certificacionesCollectionNew.contains(certificacionesCollectionOldCertificaciones)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Certificaciones " + certificacionesCollectionOldCertificaciones + " since its idEstudiante field is not nullable.");
+                    illegalOrphanMessages.add("The Usuario " + usuarioNew + " already has an item of type Estudiante whose usuario column cannot be null. Please make another selection for the usuario field.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (idUsuarioNew != null) {
-                idUsuarioNew = em.getReference(idUsuarioNew.getClass(), idUsuarioNew.getIdUsuario());
-                estudiante.setIdUsuario(idUsuarioNew);
+            if (usuarioNew != null) {
+                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getNombreUsuario());
+                estudiante.setUsuario(usuarioNew);
             }
-            Collection<Participaciones> attachedParticipacionesCollectionNew = new ArrayList<Participaciones>();
-            for (Participaciones participacionesCollectionNewParticipacionesToAttach : participacionesCollectionNew) {
-                participacionesCollectionNewParticipacionesToAttach = em.getReference(participacionesCollectionNewParticipacionesToAttach.getClass(), participacionesCollectionNewParticipacionesToAttach.getIdParticipacion());
-                attachedParticipacionesCollectionNew.add(participacionesCollectionNewParticipacionesToAttach);
-            }
-            participacionesCollectionNew = attachedParticipacionesCollectionNew;
-            estudiante.setParticipacionesCollection(participacionesCollectionNew);
-            Collection<Inscripcion> attachedInscripcionCollectionNew = new ArrayList<Inscripcion>();
-            for (Inscripcion inscripcionCollectionNewInscripcionToAttach : inscripcionCollectionNew) {
-                inscripcionCollectionNewInscripcionToAttach = em.getReference(inscripcionCollectionNewInscripcionToAttach.getClass(), inscripcionCollectionNewInscripcionToAttach.getInscripcionPK());
-                attachedInscripcionCollectionNew.add(inscripcionCollectionNewInscripcionToAttach);
-            }
-            inscripcionCollectionNew = attachedInscripcionCollectionNew;
-            estudiante.setInscripcionCollection(inscripcionCollectionNew);
-            Collection<Certificaciones> attachedCertificacionesCollectionNew = new ArrayList<Certificaciones>();
-            for (Certificaciones certificacionesCollectionNewCertificacionesToAttach : certificacionesCollectionNew) {
-                certificacionesCollectionNewCertificacionesToAttach = em.getReference(certificacionesCollectionNewCertificacionesToAttach.getClass(), certificacionesCollectionNewCertificacionesToAttach.getIdCertificado());
-                attachedCertificacionesCollectionNew.add(certificacionesCollectionNewCertificacionesToAttach);
-            }
-            certificacionesCollectionNew = attachedCertificacionesCollectionNew;
-            estudiante.setCertificacionesCollection(certificacionesCollectionNew);
             estudiante = em.merge(estudiante);
-            if (idUsuarioOld != null && !idUsuarioOld.equals(idUsuarioNew)) {
-                idUsuarioOld.setEstudiante(null);
-                idUsuarioOld = em.merge(idUsuarioOld);
+            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
+                usuarioOld.setEstudiante(null);
+                usuarioOld = em.merge(usuarioOld);
             }
-            if (idUsuarioNew != null && !idUsuarioNew.equals(idUsuarioOld)) {
-                idUsuarioNew.setEstudiante(estudiante);
-                idUsuarioNew = em.merge(idUsuarioNew);
-            }
-            for (Participaciones participacionesCollectionNewParticipaciones : participacionesCollectionNew) {
-                if (!participacionesCollectionOld.contains(participacionesCollectionNewParticipaciones)) {
-                    Estudiante oldIdEstudianteOfParticipacionesCollectionNewParticipaciones = participacionesCollectionNewParticipaciones.getIdEstudiante();
-                    participacionesCollectionNewParticipaciones.setIdEstudiante(estudiante);
-                    participacionesCollectionNewParticipaciones = em.merge(participacionesCollectionNewParticipaciones);
-                    if (oldIdEstudianteOfParticipacionesCollectionNewParticipaciones != null && !oldIdEstudianteOfParticipacionesCollectionNewParticipaciones.equals(estudiante)) {
-                        oldIdEstudianteOfParticipacionesCollectionNewParticipaciones.getParticipacionesCollection().remove(participacionesCollectionNewParticipaciones);
-                        oldIdEstudianteOfParticipacionesCollectionNewParticipaciones = em.merge(oldIdEstudianteOfParticipacionesCollectionNewParticipaciones);
-                    }
-                }
-            }
-            for (Inscripcion inscripcionCollectionNewInscripcion : inscripcionCollectionNew) {
-                if (!inscripcionCollectionOld.contains(inscripcionCollectionNewInscripcion)) {
-                    Estudiante oldEstudianteOfInscripcionCollectionNewInscripcion = inscripcionCollectionNewInscripcion.getEstudiante();
-                    inscripcionCollectionNewInscripcion.setEstudiante(estudiante);
-                    inscripcionCollectionNewInscripcion = em.merge(inscripcionCollectionNewInscripcion);
-                    if (oldEstudianteOfInscripcionCollectionNewInscripcion != null && !oldEstudianteOfInscripcionCollectionNewInscripcion.equals(estudiante)) {
-                        oldEstudianteOfInscripcionCollectionNewInscripcion.getInscripcionCollection().remove(inscripcionCollectionNewInscripcion);
-                        oldEstudianteOfInscripcionCollectionNewInscripcion = em.merge(oldEstudianteOfInscripcionCollectionNewInscripcion);
-                    }
-                }
-            }
-            for (Certificaciones certificacionesCollectionNewCertificaciones : certificacionesCollectionNew) {
-                if (!certificacionesCollectionOld.contains(certificacionesCollectionNewCertificaciones)) {
-                    Estudiante oldIdEstudianteOfCertificacionesCollectionNewCertificaciones = certificacionesCollectionNewCertificaciones.getIdEstudiante();
-                    certificacionesCollectionNewCertificaciones.setIdEstudiante(estudiante);
-                    certificacionesCollectionNewCertificaciones = em.merge(certificacionesCollectionNewCertificaciones);
-                    if (oldIdEstudianteOfCertificacionesCollectionNewCertificaciones != null && !oldIdEstudianteOfCertificacionesCollectionNewCertificaciones.equals(estudiante)) {
-                        oldIdEstudianteOfCertificacionesCollectionNewCertificaciones.getCertificacionesCollection().remove(certificacionesCollectionNewCertificaciones);
-                        oldIdEstudianteOfCertificacionesCollectionNewCertificaciones = em.merge(oldIdEstudianteOfCertificacionesCollectionNewCertificaciones);
-                    }
-                }
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                usuarioNew.setEstudiante(estudiante);
+                usuarioNew = em.merge(usuarioNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = estudiante.getIdEstudiante();
+                String id = estudiante.getDni();
                 if (findEstudiante(id) == null) {
                     throw new NonexistentEntityException("The estudiante with id " + id + " no longer exists.");
                 }
@@ -263,7 +127,7 @@ public class EstudianteJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -271,39 +135,14 @@ public class EstudianteJpaController implements Serializable {
             Estudiante estudiante;
             try {
                 estudiante = em.getReference(Estudiante.class, id);
-                estudiante.getIdEstudiante();
+                estudiante.getDni();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The estudiante with id " + id + " no longer exists.", enfe);
             }
-            List<String> illegalOrphanMessages = null;
-            Collection<Participaciones> participacionesCollectionOrphanCheck = estudiante.getParticipacionesCollection();
-            for (Participaciones participacionesCollectionOrphanCheckParticipaciones : participacionesCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Estudiante (" + estudiante + ") cannot be destroyed since the Participaciones " + participacionesCollectionOrphanCheckParticipaciones + " in its participacionesCollection field has a non-nullable idEstudiante field.");
-            }
-            Collection<Inscripcion> inscripcionCollectionOrphanCheck = estudiante.getInscripcionCollection();
-            for (Inscripcion inscripcionCollectionOrphanCheckInscripcion : inscripcionCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Estudiante (" + estudiante + ") cannot be destroyed since the Inscripcion " + inscripcionCollectionOrphanCheckInscripcion + " in its inscripcionCollection field has a non-nullable estudiante field.");
-            }
-            Collection<Certificaciones> certificacionesCollectionOrphanCheck = estudiante.getCertificacionesCollection();
-            for (Certificaciones certificacionesCollectionOrphanCheckCertificaciones : certificacionesCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Estudiante (" + estudiante + ") cannot be destroyed since the Certificaciones " + certificacionesCollectionOrphanCheckCertificaciones + " in its certificacionesCollection field has a non-nullable idEstudiante field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            Usuario idUsuario = estudiante.getIdUsuario();
-            if (idUsuario != null) {
-                idUsuario.setEstudiante(null);
-                idUsuario = em.merge(idUsuario);
+            Usuario usuario = estudiante.getUsuario();
+            if (usuario != null) {
+                usuario.setEstudiante(null);
+                usuario = em.merge(usuario);
             }
             em.remove(estudiante);
             em.getTransaction().commit();
@@ -338,7 +177,7 @@ public class EstudianteJpaController implements Serializable {
         }
     }
 
-    public Estudiante findEstudiante(Integer id) {
+    public Estudiante findEstudiante(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Estudiante.class, id);

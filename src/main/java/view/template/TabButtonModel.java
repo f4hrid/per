@@ -2,24 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package view.archetype;
+package view.template;
 
 /**
  *
  * @author Fahrid
  */
-public class ButtonModel extends javax.swing.JPanel {
+public class TabButtonModel extends javax.swing.JPanel {
 
     /**
      * Creates new form ButtonModel
-     * @param texto texto del botón
-     * @param dir_svg el directorio del pictograma para el botón
-     * @param size dimensiones del pictograma
+     * @param text texto descriptivo de la acción del botón
+     * @param svgdir directorio donde se ubica el pictograma
+     * @param size dimensiones para el pictograma
      */
-    public ButtonModel(String texto, String dir_svg, int size) {
+    public TabButtonModel(String text, String svgdir, int size) {
         initComponents();
-        setTitle(texto);
-        view.Home.setSVG(icono, dir_svg, size);
+        setTitle(text);
+        view.Home.setSVG(icono, svgdir, size);
     }
     
     private void setTitle(String text){
@@ -39,9 +39,7 @@ public class ButtonModel extends javax.swing.JPanel {
         titulo = new javax.swing.JLabel();
         icono = new custom.LabelSVG();
 
-        setBackground(model.config.menugray);
-
-        boton.setBackground(model.config.menugray);
+        boton.setBackground(new view.Home().menupanel.getBackground());
         boton.setPreferredSize(new java.awt.Dimension(175, 50));
         boton.setRoundBottomLeft(10);
         boton.setRoundBottomRight(10);
@@ -75,6 +73,6 @@ public class ButtonModel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public jilmar.PanelRound boton;
     public custom.LabelSVG icono;
-    private javax.swing.JLabel titulo;
+    public javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

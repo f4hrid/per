@@ -2,26 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package entities;
 
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.persistence.UniqueConstraint;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -29,162 +24,140 @@ import java.util.Date;
  * @author Fahrid
  */
 @Entity
-@Table(name = "estudiante", catalog = "bd_gea", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_usuario"}),
-    @UniqueConstraint(columnNames = {"dni_estudiante"})})
+@Table(name = "estudiante")
 @NamedQueries({
     @NamedQuery(name = "Estudiante.findAll", query = "SELECT e FROM Estudiante e"),
-    @NamedQuery(name = "Estudiante.findByIdEstudiante", query = "SELECT e FROM Estudiante e WHERE e.idEstudiante = :idEstudiante"),
-    @NamedQuery(name = "Estudiante.findByNombreEstudiante", query = "SELECT e FROM Estudiante e WHERE e.nombreEstudiante = :nombreEstudiante"),
-    @NamedQuery(name = "Estudiante.findByDniEstudiante", query = "SELECT e FROM Estudiante e WHERE e.dniEstudiante = :dniEstudiante"),
-    @NamedQuery(name = "Estudiante.findByTelefonoEstudiante", query = "SELECT e FROM Estudiante e WHERE e.telefonoEstudiante = :telefonoEstudiante"),
-    @NamedQuery(name = "Estudiante.findByEmailEstudiante", query = "SELECT e FROM Estudiante e WHERE e.emailEstudiante = :emailEstudiante"),
-    @NamedQuery(name = "Estudiante.findByFechaNacimientoEstudiante", query = "SELECT e FROM Estudiante e WHERE e.fechaNacimientoEstudiante = :fechaNacimientoEstudiante"),
-    @NamedQuery(name = "Estudiante.findByDireccionEstudiante", query = "SELECT e FROM Estudiante e WHERE e.direccionEstudiante = :direccionEstudiante")})
+    @NamedQuery(name = "Estudiante.findByNombres", query = "SELECT e FROM Estudiante e WHERE e.nombres = :nombres"),
+    @NamedQuery(name = "Estudiante.findByApellidos", query = "SELECT e FROM Estudiante e WHERE e.apellidos = :apellidos"),
+    @NamedQuery(name = "Estudiante.findByTelefono", query = "SELECT e FROM Estudiante e WHERE e.telefono = :telefono"),
+    @NamedQuery(name = "Estudiante.findByDireccion", query = "SELECT e FROM Estudiante e WHERE e.direccion = :direccion"),
+    @NamedQuery(name = "Estudiante.findByGenero", query = "SELECT e FROM Estudiante e WHERE e.genero = :genero"),
+    @NamedQuery(name = "Estudiante.findByFechaNacimiento", query = "SELECT e FROM Estudiante e WHERE e.fechaNacimiento = :fechaNacimiento"),
+    @NamedQuery(name = "Estudiante.findByDni", query = "SELECT e FROM Estudiante e WHERE e.dni = :dni")})
 public class Estudiante implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_estudiante", nullable = false)
-    private Integer idEstudiante;
+    @Column(name = "nombres")
+    private String nombres;
     @Basic(optional = false)
-    @Column(name = "nombre_estudiante", nullable = false, length = 255)
-    private String nombreEstudiante;
+    @Column(name = "apellidos")
+    private String apellidos;
+    @Column(name = "telefono")
+    private String telefono;
     @Basic(optional = false)
-    @Column(name = "dni_estudiante", nullable = false, length = 15)
-    private String dniEstudiante;
-    @Column(name = "telefono_estudiante", length = 10)
-    private String telefonoEstudiante;
+    @Lob
+    @Column(name = "email")
+    private String email;
     @Basic(optional = false)
-    @Column(name = "email_estudiante", nullable = false, length = 255)
-    private String emailEstudiante;
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "genero")
+    private String genero;
     @Basic(optional = false)
-    @Column(name = "fecha_nacimiento_estudiante", nullable = false)
+    @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.DATE)
-    private Date fechaNacimientoEstudiante;
+    private Date fechaNacimiento;
+    @Id
     @Basic(optional = false)
-    @Column(name = "direccion_estudiante", nullable = false, length = 100)
-    private String direccionEstudiante;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
+    @Column(name = "dni")
+    private String dni;
+    @JoinColumn(name = "dni", referencedColumnName = "nombre_usuario", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private Usuario idUsuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstudiante")
-    private Collection<Participaciones> participacionesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estudiante")
-    private Collection<Inscripcion> inscripcionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstudiante")
-    private Collection<Certificaciones> certificacionesCollection;
+    private Usuario usuario;
 
     public Estudiante() {
     }
 
-    public Estudiante(Integer idEstudiante) {
-        this.idEstudiante = idEstudiante;
+    public Estudiante(String dni) {
+        this.dni = dni;
     }
 
-    public Estudiante(Integer idEstudiante, String nombreEstudiante, String dniEstudiante, String emailEstudiante, Date fechaNacimientoEstudiante, String direccionEstudiante) {
-        this.idEstudiante = idEstudiante;
-        this.nombreEstudiante = nombreEstudiante;
-        this.dniEstudiante = dniEstudiante;
-        this.emailEstudiante = emailEstudiante;
-        this.fechaNacimientoEstudiante = fechaNacimientoEstudiante;
-        this.direccionEstudiante = direccionEstudiante;
+    public Estudiante(String dni, String nombres, String apellidos, String email, String direccion, Date fechaNacimiento) {
+        this.dni = dni;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.direccion = direccion;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Integer getIdEstudiante() {
-        return idEstudiante;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setIdEstudiante(Integer idEstudiante) {
-        this.idEstudiante = idEstudiante;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getNombreEstudiante() {
-        return nombreEstudiante;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setNombreEstudiante(String nombreEstudiante) {
-        this.nombreEstudiante = nombreEstudiante;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
-    public String getDniEstudiante() {
-        return dniEstudiante;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setDniEstudiante(String dniEstudiante) {
-        this.dniEstudiante = dniEstudiante;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public String getTelefonoEstudiante() {
-        return telefonoEstudiante;
+    public String getEmail() {
+        return email;
     }
 
-    public void setTelefonoEstudiante(String telefonoEstudiante) {
-        this.telefonoEstudiante = telefonoEstudiante;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getEmailEstudiante() {
-        return emailEstudiante;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setEmailEstudiante(String emailEstudiante) {
-        this.emailEstudiante = emailEstudiante;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
-    public Date getFechaNacimientoEstudiante() {
-        return fechaNacimientoEstudiante;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setFechaNacimientoEstudiante(Date fechaNacimientoEstudiante) {
-        this.fechaNacimientoEstudiante = fechaNacimientoEstudiante;
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
-    public String getDireccionEstudiante() {
-        return direccionEstudiante;
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setDireccionEstudiante(String direccionEstudiante) {
-        this.direccionEstudiante = direccionEstudiante;
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Usuario getIdUsuario() {
-        return idUsuario;
+    public String getDni() {
+        return dni;
     }
 
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
-    public Collection<Participaciones> getParticipacionesCollection() {
-        return participacionesCollection;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setParticipacionesCollection(Collection<Participaciones> participacionesCollection) {
-        this.participacionesCollection = participacionesCollection;
-    }
-
-    public Collection<Inscripcion> getInscripcionCollection() {
-        return inscripcionCollection;
-    }
-
-    public void setInscripcionCollection(Collection<Inscripcion> inscripcionCollection) {
-        this.inscripcionCollection = inscripcionCollection;
-    }
-
-    public Collection<Certificaciones> getCertificacionesCollection() {
-        return certificacionesCollection;
-    }
-
-    public void setCertificacionesCollection(Collection<Certificaciones> certificacionesCollection) {
-        this.certificacionesCollection = certificacionesCollection;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idEstudiante != null ? idEstudiante.hashCode() : 0);
+        hash += (dni != null ? dni.hashCode() : 0);
         return hash;
     }
 
@@ -195,7 +168,7 @@ public class Estudiante implements Serializable {
             return false;
         }
         Estudiante other = (Estudiante) object;
-        if ((this.idEstudiante == null && other.idEstudiante != null) || (this.idEstudiante != null && !this.idEstudiante.equals(other.idEstudiante))) {
+        if ((this.dni == null && other.dni != null) || (this.dni != null && !this.dni.equals(other.dni))) {
             return false;
         }
         return true;
@@ -203,7 +176,7 @@ public class Estudiante implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Estudiante[ idEstudiante=" + idEstudiante + " ]";
+        return "entities.Estudiante[ dni=" + dni + " ]";
     }
     
 }

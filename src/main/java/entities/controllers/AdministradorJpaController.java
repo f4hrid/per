@@ -2,21 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller;
+package entities.controllers;
 
-import controller.exceptions.IllegalOrphanException;
-import controller.exceptions.NonexistentEntityException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import entities.Administrador;
 import java.io.Serializable;
 import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import model.Usuario;
+import entities.Usuario;
+import entities.controllers.exceptions.IllegalOrphanException;
+import entities.controllers.exceptions.NonexistentEntityException;
+import entities.controllers.exceptions.PreexistingEntityException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
-import model.Administrador;
 
 /**
  *
@@ -33,16 +34,16 @@ public class AdministradorJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Administrador administrador) throws IllegalOrphanException {
+    public void create(Administrador administrador) throws IllegalOrphanException, PreexistingEntityException, Exception {
         List<String> illegalOrphanMessages = null;
-        Usuario idUsuarioOrphanCheck = administrador.getIdUsuario();
-        if (idUsuarioOrphanCheck != null) {
-            Administrador oldAdministradorOfIdUsuario = idUsuarioOrphanCheck.getAdministrador();
-            if (oldAdministradorOfIdUsuario != null) {
+        Usuario usuarioOrphanCheck = administrador.getUsuario();
+        if (usuarioOrphanCheck != null) {
+            Administrador oldAdministradorOfUsuario = usuarioOrphanCheck.getAdministrador();
+            if (oldAdministradorOfUsuario != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("The Usuario " + idUsuarioOrphanCheck + " already has an item of type Administrador whose idUsuario column cannot be null. Please make another selection for the idUsuario field.");
+                illegalOrphanMessages.add("The Usuario " + usuarioOrphanCheck + " already has an item of type Administrador whose usuario column cannot be null. Please make another selection for the usuario field.");
             }
         }
         if (illegalOrphanMessages != null) {
@@ -52,17 +53,22 @@ public class AdministradorJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario idUsuario = administrador.getIdUsuario();
-            if (idUsuario != null) {
-                idUsuario = em.getReference(idUsuario.getClass(), idUsuario.getIdUsuario());
-                administrador.setIdUsuario(idUsuario);
+            Usuario usuario = administrador.getUsuario();
+            if (usuario != null) {
+                usuario = em.getReference(usuario.getClass(), usuario.getNombreUsuario());
+                administrador.setUsuario(usuario);
             }
             em.persist(administrador);
-            if (idUsuario != null) {
-                idUsuario.setAdministrador(administrador);
-                idUsuario = em.merge(idUsuario);
+            if (usuario != null) {
+                usuario.setAdministrador(administrador);
+                usuario = em.merge(usuario);
             }
             em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findAdministrador(administrador.getDni()) != null) {
+                throw new PreexistingEntityException("Administrador " + administrador + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -75,40 +81,40 @@ public class AdministradorJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Administrador persistentAdministrador = em.find(Administrador.class, administrador.getIdAdministrador());
-            Usuario idUsuarioOld = persistentAdministrador.getIdUsuario();
-            Usuario idUsuarioNew = administrador.getIdUsuario();
+            Administrador persistentAdministrador = em.find(Administrador.class, administrador.getDni());
+            Usuario usuarioOld = persistentAdministrador.getUsuario();
+            Usuario usuarioNew = administrador.getUsuario();
             List<String> illegalOrphanMessages = null;
-            if (idUsuarioNew != null && !idUsuarioNew.equals(idUsuarioOld)) {
-                Administrador oldAdministradorOfIdUsuario = idUsuarioNew.getAdministrador();
-                if (oldAdministradorOfIdUsuario != null) {
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                Administrador oldAdministradorOfUsuario = usuarioNew.getAdministrador();
+                if (oldAdministradorOfUsuario != null) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("The Usuario " + idUsuarioNew + " already has an item of type Administrador whose idUsuario column cannot be null. Please make another selection for the idUsuario field.");
+                    illegalOrphanMessages.add("The Usuario " + usuarioNew + " already has an item of type Administrador whose usuario column cannot be null. Please make another selection for the usuario field.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (idUsuarioNew != null) {
-                idUsuarioNew = em.getReference(idUsuarioNew.getClass(), idUsuarioNew.getIdUsuario());
-                administrador.setIdUsuario(idUsuarioNew);
+            if (usuarioNew != null) {
+                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getNombreUsuario());
+                administrador.setUsuario(usuarioNew);
             }
             administrador = em.merge(administrador);
-            if (idUsuarioOld != null && !idUsuarioOld.equals(idUsuarioNew)) {
-                idUsuarioOld.setAdministrador(null);
-                idUsuarioOld = em.merge(idUsuarioOld);
+            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
+                usuarioOld.setAdministrador(null);
+                usuarioOld = em.merge(usuarioOld);
             }
-            if (idUsuarioNew != null && !idUsuarioNew.equals(idUsuarioOld)) {
-                idUsuarioNew.setAdministrador(administrador);
-                idUsuarioNew = em.merge(idUsuarioNew);
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                usuarioNew.setAdministrador(administrador);
+                usuarioNew = em.merge(usuarioNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = administrador.getIdAdministrador();
+                String id = administrador.getDni();
                 if (findAdministrador(id) == null) {
                     throw new NonexistentEntityException("The administrador with id " + id + " no longer exists.");
                 }
@@ -121,7 +127,7 @@ public class AdministradorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -129,14 +135,14 @@ public class AdministradorJpaController implements Serializable {
             Administrador administrador;
             try {
                 administrador = em.getReference(Administrador.class, id);
-                administrador.getIdAdministrador();
+                administrador.getDni();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The administrador with id " + id + " no longer exists.", enfe);
             }
-            Usuario idUsuario = administrador.getIdUsuario();
-            if (idUsuario != null) {
-                idUsuario.setAdministrador(null);
-                idUsuario = em.merge(idUsuario);
+            Usuario usuario = administrador.getUsuario();
+            if (usuario != null) {
+                usuario.setAdministrador(null);
+                usuario = em.merge(usuario);
             }
             em.remove(administrador);
             em.getTransaction().commit();
@@ -171,7 +177,7 @@ public class AdministradorJpaController implements Serializable {
         }
     }
 
-    public Administrador findAdministrador(Integer id) {
+    public Administrador findAdministrador(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Administrador.class, id);

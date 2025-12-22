@@ -4,83 +4,117 @@
  */
 package controller;
 
+import static controller.Functions.print;
+import entities.Estudiante;
+import entities.Usuario;
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import static model.config.*;
+import javax.swing.JPanel;
+import model.Cards;
+import static model.Cards.OFERTAS;
+import static model.Cards.PRUEBA;
+import model.Users;
+import model.config;
+import static model.config.REDUV;
 import view.Home;
-import view.archetype.ButtonModel;
+import static view.Home.mouseEnteredEvent;
+import view.Login;
+import view.template.AccessControlButtonModel;
 
 /**
  *
  * @author Fahrid
  */
 public class HomeController {
-    view.Home main;
     
-    private static final String CARD_OFFERS = "card_controlofertas";
-    private static final String CARD_COFFERS = "card_controlacademico";
-    private static final String CARD_USERS = "card_controlusuarios";
-
+    private Home main;
+    
+    private final Usuario user;
     
     
-    public HomeController (Home home) {
-        this.main = home;
+    public HomeController (Home h) {
+        this.main = h;
+        this.user = main.login.controller.getUser();
     }
 
     public void init(){
-        buttonsMenu();
+        invitado();
+        setUserName();
         //menuButtons();
     }
     
-    public void buttonsMenu(){
-        buttonOffers(); // boton de visualizador de ofertas académicas
-        buttonCOffers(); // boton de diseño de ofertas
-        buttonUser(); //boton de usuario
-        exitButton(); // boton de guardado
+    private void invitado(){
+        AccessControlButtonModel b = createAccess("Iniciar Sesión");
+        
+        Runnable clicked = ()->{
+            main.home.add(main.login, PRUEBA.toString());
+            view.Home.selectCard(main.home, PRUEBA.toString());
+        };
+        Runnable entered = ()->{
+            mouseEnteredEvent(b.boton, Color.BLACK);
+        };
+        Runnable exited = ()->{
+            mouseEnteredEvent(b.boton, REDUV);
+        };
+        
+        bindMouseListener(b.boton, clicked, entered, exited);
+    }
+    
+    private AccessControlButtonModel createAccess(String titulo){
+        AccessControlButtonModel b = view.Home.createACBM(titulo, REDUV);
+        main.accesscontrol.add(b);
+        return b;
+    }
+    
+    private void setUserName(){
+        try{
+            Estudiante e = user.getEstudiante();
+            main.usuario.setText(e.getNombres()+" "+e.getApellidos());
+        }catch(Exception e){
+            main.usuario.setText(null);
+        }
+    }
+    
+    private void buttonsMenu(){
+        print("ingrese al sistema");
+        //buttonOffers(); // boton de visualizador de ofertas académicas
+        //buttonCOffers(); // boton de diseño de ofertas
+        //buttonUser(); //boton de usuario
+        //exitButton(); // boton de guardado
         
         
         // bindMenu(main.boton_ofertas, );
     }
     
-    /*
-    public void bindMenu(JComponent c, Runnable event){
-        c.addMouseListener(new MouseAdapter() {
+    private void bindMouseListener(JComponent boton, Runnable clicked, Runnable entered, Runnable exited){
+        boton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e){
-                event.run();
+                clicked.run();
             }
             @Override
             public void mouseEntered(MouseEvent e){
-                Home.setHandCursor(c);
-                Home.setShaded(c, reduv);
+                entered.run();
             }
             @Override
             public void mouseExited(MouseEvent e){
-                Home.setShaded(c, main.getBackgroundMenu());
+                exited.run();
             }
         });
     }
     
-    public void gh(JComponent parent, String card){
-        new Runnable(){
-            @Override
-            public void run() {
-                Home.selectCard((javax.swing.JPanel) parent, card);
-            }
-        };
-    }
-    */
-    
+
+    /*
     public void buttonOffers () {
         main.boton_ofertas.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 //fun.print("UNIVALLE");
                 main.selectCard(main.contentpanel, CARD_OFFERS);
-                
-                main.setUsefulButtonVisible(false);
             }
             
             @Override
@@ -89,7 +123,7 @@ public class HomeController {
                 main.setHandCursor(main.boton_ofertas);
                 
                 // cambiar color
-                main.setShaded(main.boton_ofertas, reduv);
+                main.setShaded(main.boton_ofertas, REDUV);
             }
             
             @Override
@@ -106,9 +140,6 @@ public class HomeController {
                 //boton de creación de ofertas cardlayout
                 main.selectCard(main.contentpanel, CARD_COFFERS);
                 
-                main.setUsefulButtonVisible(true);
-                
-                buttonHandy(); //probando
                 
             }
             
@@ -116,7 +147,7 @@ public class HomeController {
             public void mouseEntered(java.awt.event.MouseEvent e){
                 main.setHandCursor(main.boton_cofertas);
                 
-                main.setShaded(main.boton_cofertas, reduv);
+                main.setShaded(main.boton_cofertas, REDUV);
             }
             
             @Override
@@ -127,57 +158,40 @@ public class HomeController {
         });
     }
 
-    public void buttonHandy(){
-        ButtonModel boton = new ButtonModel("Crear Extensión Académica","svg/add.svg",25);
-
-        if (main.usefulbutton_panel.getComponentCount() == 1) {
-            return;
-        } else {
-            boton.addMouseListener(new java.awt.event.MouseAdapter(){
-                @Override
-                public void mouseEntered(java.awt.event.MouseEvent e){
-                    main.setShaded(boton.boton, reduv);
-                }
-            });
-            main.usefulbutton_panel.add(boton);
-        }
-                
-
-    }
-    
     public void buttonUser(){
         main.boton_usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
                 // boton de visualizador de usuarios del sistema: docentes, estudiante, administradores
-                // control total a la información
+                // homecontrol total a la información
                 // por card layout
                 
-                main.selectCard(main.contentpanel, CARD_USERS);
+                Home.selectCard(main.contentpanel, CARD_USERS);
 
-                main.setUsefulButtonVisible(true);
             }
             
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
-                main.setHandCursor(main.boton_usuarios);
-                main.setShaded(main.boton_usuarios, reduv);
+                Home.setHandCursor(main.boton_usuarios);
+                Home.setShaded(main.boton_usuarios, REDUV);
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                main.setShaded(main.boton_usuarios, main.getBackgroundMenu());
+                Home.setShaded(main.boton_usuarios, main.getBackgroundMenu());
             }
             
         });
     }
+    */
         
+    
+    /*
     public void exitButton(){
         main.boton_salida.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e){
-                Home.showConfirmPane(
-                        null,
+                main.showConfirmPane(
                         "¿Esta seguro que desea salir y guardar los cambios hechos?", 
                         "Salir y Guardar Cambios",
                         JOptionPane.QUESTION_MESSAGE
@@ -186,17 +200,18 @@ public class HomeController {
             
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e){
-                main.setHandCursor(main.boton_salida);
-                main.setShaded(main.boton_salida, reduv);
+                Home.setHandCursor(main.boton_salida);
+                Home.setShaded(main.boton_salida, REDUV);
 
             }
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent e){
-                main.setShaded(main.boton_salida, main.getBackgroundMenu());
+                Home.setShaded(main.boton_salida, main.getBackgroundMenu());
             }
             
         });
     }
+    */
         
 }

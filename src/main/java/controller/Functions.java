@@ -43,7 +43,7 @@ public class Functions {
         }
     }
     
-    //temas negros
+    //tema negro
     public static void themeFlatDark() {
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());

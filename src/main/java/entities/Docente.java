@@ -2,121 +2,96 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package entities;
 
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  *
  * @author Fahrid
  */
 @Entity
-@Table(name = "docente", catalog = "bd_gea", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_usuario"})})
+@Table(name = "docente")
 @NamedQueries({
     @NamedQuery(name = "Docente.findAll", query = "SELECT d FROM Docente d"),
-    @NamedQuery(name = "Docente.findByIdDocente", query = "SELECT d FROM Docente d WHERE d.idDocente = :idDocente"),
-    @NamedQuery(name = "Docente.findByNombreDocente", query = "SELECT d FROM Docente d WHERE d.nombreDocente = :nombreDocente")})
+    @NamedQuery(name = "Docente.findByNombres", query = "SELECT d FROM Docente d WHERE d.nombres = :nombres"),
+    @NamedQuery(name = "Docente.findByApellidos", query = "SELECT d FROM Docente d WHERE d.apellidos = :apellidos"),
+    @NamedQuery(name = "Docente.findByDni", query = "SELECT d FROM Docente d WHERE d.dni = :dni")})
 public class Docente implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "nombres")
+    private String nombres;
+    @Basic(optional = false)
+    @Column(name = "apellidos")
+    private String apellidos;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_docente", nullable = false)
-    private Integer idDocente;
-    @Basic(optional = false)
-    @Column(name = "nombre_docente", nullable = false, length = 255)
-    private String nombreDocente;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocente")
-    private Collection<Participaciones> participacionesCollection;
-    @OneToMany(mappedBy = "idDocente")
-    private Collection<Ofertas> ofertasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocente")
-    private Collection<Certificaciones> certificacionesCollection;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
+    @Column(name = "dni")
+    private String dni;
+    @JoinColumn(name = "dni", referencedColumnName = "nombre_usuario", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private Usuario idUsuario;
+    private Usuario usuario;
 
     public Docente() {
     }
 
-    public Docente(Integer idDocente) {
-        this.idDocente = idDocente;
+    public Docente(String dni) {
+        this.dni = dni;
     }
 
-    public Docente(Integer idDocente, String nombreDocente) {
-        this.idDocente = idDocente;
-        this.nombreDocente = nombreDocente;
+    public Docente(String dni, String nombres, String apellidos) {
+        this.dni = dni;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
     }
 
-    public Integer getIdDocente() {
-        return idDocente;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setIdDocente(Integer idDocente) {
-        this.idDocente = idDocente;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getNombreDocente() {
-        return nombreDocente;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setNombreDocente(String nombreDocente) {
-        this.nombreDocente = nombreDocente;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
-    public Collection<Participaciones> getParticipacionesCollection() {
-        return participacionesCollection;
+    public String getDni() {
+        return dni;
     }
 
-    public void setParticipacionesCollection(Collection<Participaciones> participacionesCollection) {
-        this.participacionesCollection = participacionesCollection;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
-    public Collection<Ofertas> getOfertasCollection() {
-        return ofertasCollection;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setOfertasCollection(Collection<Ofertas> ofertasCollection) {
-        this.ofertasCollection = ofertasCollection;
-    }
-
-    public Collection<Certificaciones> getCertificacionesCollection() {
-        return certificacionesCollection;
-    }
-
-    public void setCertificacionesCollection(Collection<Certificaciones> certificacionesCollection) {
-        this.certificacionesCollection = certificacionesCollection;
-    }
-
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idDocente != null ? idDocente.hashCode() : 0);
+        hash += (dni != null ? dni.hashCode() : 0);
         return hash;
     }
 
@@ -127,7 +102,7 @@ public class Docente implements Serializable {
             return false;
         }
         Docente other = (Docente) object;
-        if ((this.idDocente == null && other.idDocente != null) || (this.idDocente != null && !this.idDocente.equals(other.idDocente))) {
+        if ((this.dni == null && other.dni != null) || (this.dni != null && !this.dni.equals(other.dni))) {
             return false;
         }
         return true;
@@ -135,7 +110,7 @@ public class Docente implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Docente[ idDocente=" + idDocente + " ]";
+        return "entities.Docente[ dni=" + dni + " ]";
     }
     
 }

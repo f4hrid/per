@@ -2,23 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller;
+package entities.controllers;
 
-import controller.exceptions.IllegalOrphanException;
-import controller.exceptions.NonexistentEntityException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import java.io.Serializable;
 import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import model.Estudiante;
-import model.Administrador;
-import model.Docente;
+import entities.Estudiante;
+import entities.Administrador;
+import entities.Docente;
+import entities.Usuario;
+import entities.controllers.exceptions.IllegalOrphanException;
+import entities.controllers.exceptions.NonexistentEntityException;
+import entities.controllers.exceptions.PreexistingEntityException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
-import model.Usuario;
 
 /**
  *
@@ -35,55 +36,60 @@ public class UsuarioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Usuario usuario) {
+    public void create(Usuario usuario) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Estudiante estudiante = usuario.getEstudiante();
             if (estudiante != null) {
-                estudiante = em.getReference(estudiante.getClass(), estudiante.getIdEstudiante());
+                estudiante = em.getReference(estudiante.getClass(), estudiante.getDni());
                 usuario.setEstudiante(estudiante);
             }
             Administrador administrador = usuario.getAdministrador();
             if (administrador != null) {
-                administrador = em.getReference(administrador.getClass(), administrador.getIdAdministrador());
+                administrador = em.getReference(administrador.getClass(), administrador.getDni());
                 usuario.setAdministrador(administrador);
             }
             Docente docente = usuario.getDocente();
             if (docente != null) {
-                docente = em.getReference(docente.getClass(), docente.getIdDocente());
+                docente = em.getReference(docente.getClass(), docente.getDni());
                 usuario.setDocente(docente);
             }
             em.persist(usuario);
             if (estudiante != null) {
-                Usuario oldIdUsuarioOfEstudiante = estudiante.getIdUsuario();
-                if (oldIdUsuarioOfEstudiante != null) {
-                    oldIdUsuarioOfEstudiante.setEstudiante(null);
-                    oldIdUsuarioOfEstudiante = em.merge(oldIdUsuarioOfEstudiante);
+                Usuario oldUsuarioOfEstudiante = estudiante.getUsuario();
+                if (oldUsuarioOfEstudiante != null) {
+                    oldUsuarioOfEstudiante.setEstudiante(null);
+                    oldUsuarioOfEstudiante = em.merge(oldUsuarioOfEstudiante);
                 }
-                estudiante.setIdUsuario(usuario);
+                estudiante.setUsuario(usuario);
                 estudiante = em.merge(estudiante);
             }
             if (administrador != null) {
-                Usuario oldIdUsuarioOfAdministrador = administrador.getIdUsuario();
-                if (oldIdUsuarioOfAdministrador != null) {
-                    oldIdUsuarioOfAdministrador.setAdministrador(null);
-                    oldIdUsuarioOfAdministrador = em.merge(oldIdUsuarioOfAdministrador);
+                Usuario oldUsuarioOfAdministrador = administrador.getUsuario();
+                if (oldUsuarioOfAdministrador != null) {
+                    oldUsuarioOfAdministrador.setAdministrador(null);
+                    oldUsuarioOfAdministrador = em.merge(oldUsuarioOfAdministrador);
                 }
-                administrador.setIdUsuario(usuario);
+                administrador.setUsuario(usuario);
                 administrador = em.merge(administrador);
             }
             if (docente != null) {
-                Usuario oldIdUsuarioOfDocente = docente.getIdUsuario();
-                if (oldIdUsuarioOfDocente != null) {
-                    oldIdUsuarioOfDocente.setDocente(null);
-                    oldIdUsuarioOfDocente = em.merge(oldIdUsuarioOfDocente);
+                Usuario oldUsuarioOfDocente = docente.getUsuario();
+                if (oldUsuarioOfDocente != null) {
+                    oldUsuarioOfDocente.setDocente(null);
+                    oldUsuarioOfDocente = em.merge(oldUsuarioOfDocente);
                 }
-                docente.setIdUsuario(usuario);
+                docente.setUsuario(usuario);
                 docente = em.merge(docente);
             }
             em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findUsuario(usuario.getNombreUsuario()) != null) {
+                throw new PreexistingEntityException("Usuario " + usuario + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -96,7 +102,7 @@ public class UsuarioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario persistentUsuario = em.find(Usuario.class, usuario.getIdUsuario());
+            Usuario persistentUsuario = em.find(Usuario.class, usuario.getNombreUsuario());
             Estudiante estudianteOld = persistentUsuario.getEstudiante();
             Estudiante estudianteNew = usuario.getEstudiante();
             Administrador administradorOld = persistentUsuario.getAdministrador();
@@ -108,68 +114,68 @@ public class UsuarioJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("You must retain Estudiante " + estudianteOld + " since its idUsuario field is not nullable.");
+                illegalOrphanMessages.add("You must retain Estudiante " + estudianteOld + " since its usuario field is not nullable.");
             }
             if (administradorOld != null && !administradorOld.equals(administradorNew)) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("You must retain Administrador " + administradorOld + " since its idUsuario field is not nullable.");
+                illegalOrphanMessages.add("You must retain Administrador " + administradorOld + " since its usuario field is not nullable.");
             }
             if (docenteOld != null && !docenteOld.equals(docenteNew)) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("You must retain Docente " + docenteOld + " since its idUsuario field is not nullable.");
+                illegalOrphanMessages.add("You must retain Docente " + docenteOld + " since its usuario field is not nullable.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             if (estudianteNew != null) {
-                estudianteNew = em.getReference(estudianteNew.getClass(), estudianteNew.getIdEstudiante());
+                estudianteNew = em.getReference(estudianteNew.getClass(), estudianteNew.getDni());
                 usuario.setEstudiante(estudianteNew);
             }
             if (administradorNew != null) {
-                administradorNew = em.getReference(administradorNew.getClass(), administradorNew.getIdAdministrador());
+                administradorNew = em.getReference(administradorNew.getClass(), administradorNew.getDni());
                 usuario.setAdministrador(administradorNew);
             }
             if (docenteNew != null) {
-                docenteNew = em.getReference(docenteNew.getClass(), docenteNew.getIdDocente());
+                docenteNew = em.getReference(docenteNew.getClass(), docenteNew.getDni());
                 usuario.setDocente(docenteNew);
             }
             usuario = em.merge(usuario);
             if (estudianteNew != null && !estudianteNew.equals(estudianteOld)) {
-                Usuario oldIdUsuarioOfEstudiante = estudianteNew.getIdUsuario();
-                if (oldIdUsuarioOfEstudiante != null) {
-                    oldIdUsuarioOfEstudiante.setEstudiante(null);
-                    oldIdUsuarioOfEstudiante = em.merge(oldIdUsuarioOfEstudiante);
+                Usuario oldUsuarioOfEstudiante = estudianteNew.getUsuario();
+                if (oldUsuarioOfEstudiante != null) {
+                    oldUsuarioOfEstudiante.setEstudiante(null);
+                    oldUsuarioOfEstudiante = em.merge(oldUsuarioOfEstudiante);
                 }
-                estudianteNew.setIdUsuario(usuario);
+                estudianteNew.setUsuario(usuario);
                 estudianteNew = em.merge(estudianteNew);
             }
             if (administradorNew != null && !administradorNew.equals(administradorOld)) {
-                Usuario oldIdUsuarioOfAdministrador = administradorNew.getIdUsuario();
-                if (oldIdUsuarioOfAdministrador != null) {
-                    oldIdUsuarioOfAdministrador.setAdministrador(null);
-                    oldIdUsuarioOfAdministrador = em.merge(oldIdUsuarioOfAdministrador);
+                Usuario oldUsuarioOfAdministrador = administradorNew.getUsuario();
+                if (oldUsuarioOfAdministrador != null) {
+                    oldUsuarioOfAdministrador.setAdministrador(null);
+                    oldUsuarioOfAdministrador = em.merge(oldUsuarioOfAdministrador);
                 }
-                administradorNew.setIdUsuario(usuario);
+                administradorNew.setUsuario(usuario);
                 administradorNew = em.merge(administradorNew);
             }
             if (docenteNew != null && !docenteNew.equals(docenteOld)) {
-                Usuario oldIdUsuarioOfDocente = docenteNew.getIdUsuario();
-                if (oldIdUsuarioOfDocente != null) {
-                    oldIdUsuarioOfDocente.setDocente(null);
-                    oldIdUsuarioOfDocente = em.merge(oldIdUsuarioOfDocente);
+                Usuario oldUsuarioOfDocente = docenteNew.getUsuario();
+                if (oldUsuarioOfDocente != null) {
+                    oldUsuarioOfDocente.setDocente(null);
+                    oldUsuarioOfDocente = em.merge(oldUsuarioOfDocente);
                 }
-                docenteNew.setIdUsuario(usuario);
+                docenteNew.setUsuario(usuario);
                 docenteNew = em.merge(docenteNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = usuario.getIdUsuario();
+                String id = usuario.getNombreUsuario();
                 if (findUsuario(id) == null) {
                     throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
                 }
@@ -182,7 +188,7 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -190,7 +196,7 @@ public class UsuarioJpaController implements Serializable {
             Usuario usuario;
             try {
                 usuario = em.getReference(Usuario.class, id);
-                usuario.getIdUsuario();
+                usuario.getNombreUsuario();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
             }
@@ -200,21 +206,21 @@ public class UsuarioJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Estudiante " + estudianteOrphanCheck + " in its estudiante field has a non-nullable idUsuario field.");
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Estudiante " + estudianteOrphanCheck + " in its estudiante field has a non-nullable usuario field.");
             }
             Administrador administradorOrphanCheck = usuario.getAdministrador();
             if (administradorOrphanCheck != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Administrador " + administradorOrphanCheck + " in its administrador field has a non-nullable idUsuario field.");
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Administrador " + administradorOrphanCheck + " in its administrador field has a non-nullable usuario field.");
             }
             Docente docenteOrphanCheck = usuario.getDocente();
             if (docenteOrphanCheck != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Docente " + docenteOrphanCheck + " in its docente field has a non-nullable idUsuario field.");
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Docente " + docenteOrphanCheck + " in its docente field has a non-nullable usuario field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
@@ -252,7 +258,7 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public Usuario findUsuario(Integer id) {
+    public Usuario findUsuario(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Usuario.class, id);

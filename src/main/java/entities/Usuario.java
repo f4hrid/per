@@ -2,20 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package entities;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import java.io.Serializable;
 
 /**
@@ -23,72 +21,67 @@ import java.io.Serializable;
  * @author Fahrid
  */
 @Entity
-@Table(name = "usuario", catalog = "bd_gea", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"codigo_usuario"})})
+@Table(name = "usuario")
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
-    @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
-    @NamedQuery(name = "Usuario.findByCodigoUsuario", query = "SELECT u FROM Usuario u WHERE u.codigoUsuario = :codigoUsuario"),
-    @NamedQuery(name = "Usuario.findByRolUsuario", query = "SELECT u FROM Usuario u WHERE u.rolUsuario = :rolUsuario"),
-    @NamedQuery(name = "Usuario.findByContrasenaUsuario", query = "SELECT u FROM Usuario u WHERE u.contrasenaUsuario = :contrasenaUsuario")})
+    @NamedQuery(name = "Usuario.findByNombreUsuario", query = "SELECT u FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario"),
+    @NamedQuery(name = "Usuario.findByRol", query = "SELECT u FROM Usuario u WHERE u.rol = :rol")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_usuario", nullable = false)
-    private Integer idUsuario;
-    @Column(name = "codigo_usuario", length = 20)
-    private String codigoUsuario;
-    @Column(name = "rol_usuario", length = 13)
-    private String rolUsuario;
-    @Column(name = "contrasena_usuario", length = 255)
-    private String contrasenaUsuario;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @Column(name = "nombre_usuario")
+    private String nombreUsuario;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "password_hash")
+    private String passwordHash;
+    @Basic(optional = false)
+    @Column(name = "rol")
+    private String rol;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
     private Estudiante estudiante;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
     private Administrador administrador;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
     private Docente docente;
 
     public Usuario() {
     }
 
-    public Usuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public Usuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Usuario(String nombreUsuario, String passwordHash, String rol) {
+        this.nombreUsuario = nombreUsuario;
+        this.passwordHash = passwordHash;
+        this.rol = rol;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public String getCodigoUsuario() {
-        return codigoUsuario;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
-    public void setCodigoUsuario(String codigoUsuario) {
-        this.codigoUsuario = codigoUsuario;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public String getRolUsuario() {
-        return rolUsuario;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
-    public void setRolUsuario(String rolUsuario) {
-        this.rolUsuario = rolUsuario;
+    public String getRol() {
+        return rol;
     }
 
-    public String getContrasenaUsuario() {
-        return contrasenaUsuario;
-    }
-
-    public void setContrasenaUsuario(String contrasenaUsuario) {
-        this.contrasenaUsuario = contrasenaUsuario;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public Estudiante getEstudiante() {
@@ -118,7 +111,7 @@ public class Usuario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
+        hash += (nombreUsuario != null ? nombreUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -129,7 +122,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
+        if ((this.nombreUsuario == null && other.nombreUsuario != null) || (this.nombreUsuario != null && !this.nombreUsuario.equals(other.nombreUsuario))) {
             return false;
         }
         return true;
@@ -137,7 +130,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Usuario[ idUsuario=" + idUsuario + " ]";
+        return "entities.Usuario[ nombreUsuario=" + nombreUsuario + " ]";
     }
     
 }
