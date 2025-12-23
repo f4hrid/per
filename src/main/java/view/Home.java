@@ -62,20 +62,11 @@ public class Home extends javax.swing.JFrame {
         return acbm;
     }
 
-    public static void mouseEnteredEvent(JComponent comp, Color col){
-        setHandCursor(comp);
-        setShaded(comp, col);
-    }
-    
-    public static void mouseExitedEvent(JComponent comp, Color col){
-        setShaded(comp, col);
-    }
-    
-    private static void setShaded(JComponent boton, Color color){
+    public static void setShaded(JComponent boton, Color color){
         boton.setBackground(color);
     }
     
-    private static void setHandCursor(JComponent comp){
+    public static void setHandCursor(JComponent comp){
         comp.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     

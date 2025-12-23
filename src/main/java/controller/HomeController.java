@@ -7,23 +7,18 @@ package controller;
 import static controller.Functions.print;
 import entities.Estudiante;
 import entities.Usuario;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
-import model.Cards;
-import static model.Cards.OFERTAS;
-import static model.Cards.PRUEBA;
-import model.Users;
-import model.config;
 import static model.config.REDUV;
 import view.Home;
-import static view.Home.mouseEnteredEvent;
-import view.Login;
+import static view.Home.selectCard;
+import static view.Home.setHandCursor;
+import static view.Home.setShaded;
 import view.template.AccessControlButtonModel;
+import static model.Cards.LOGIN;
+import static model.Cards.SIGNUP;
 
 /**
  *
@@ -48,17 +43,41 @@ public class HomeController {
     }
     
     private void invitado(){
+        rbacLogin();
+        rbacRecord();
+    }
+    
+    private void rbacRecord(){
+        AccessControlButtonModel b = createAccess("Registrarse");
+        
+        Runnable clicked = ()->{
+            main.home.add(main.login, SIGNUP.getCard());
+            selectCard(main.home, SIGNUP.getCard());
+        };
+        Runnable entered = ()->{
+            setShaded(b.boton, Color.BLACK);
+            setHandCursor(b.boton);
+        };
+        Runnable exited = ()->{
+            setShaded(b.boton, REDUV);
+        };
+        
+        bindMouseListener(b.boton, clicked, entered, exited);
+    }
+    
+    private void rbacLogin(){
         AccessControlButtonModel b = createAccess("Iniciar Sesión");
         
         Runnable clicked = ()->{
-            main.home.add(main.login, PRUEBA.toString());
-            view.Home.selectCard(main.home, PRUEBA.toString());
+            main.home.add(main.login, LOGIN.getCard());
+            selectCard(main.home, LOGIN.getCard());
         };
         Runnable entered = ()->{
-            mouseEnteredEvent(b.boton, Color.BLACK);
+            setShaded(b.boton, Color.BLACK);
+            setHandCursor(b.boton);
         };
         Runnable exited = ()->{
-            mouseEnteredEvent(b.boton, REDUV);
+            setShaded(b.boton, REDUV);
         };
         
         bindMouseListener(b.boton, clicked, entered, exited);
@@ -90,7 +109,7 @@ public class HomeController {
         // bindMenu(main.boton_ofertas, );
     }
     
-    private void bindMouseListener(JComponent boton, Runnable clicked, Runnable entered, Runnable exited){
+    public static void bindMouseListener(JComponent boton, Runnable clicked, Runnable entered, Runnable exited){
         boton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e){
@@ -103,6 +122,28 @@ public class HomeController {
             @Override
             public void mouseExited(MouseEvent e){
                 exited.run();
+            }
+        });
+    }
+    
+    public static void bindMouseListener(JComponent boton, Runnable clicked, Runnable entered){
+        boton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                clicked.run();
+            }
+            @Override
+            public void mouseEntered(MouseEvent e){
+                entered.run();
+            }
+        });
+    }
+
+    public static void bindMouseListener(JComponent boton, Runnable clicked){
+        boton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                clicked.run();
             }
         });
     }

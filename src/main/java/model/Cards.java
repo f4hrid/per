@@ -12,7 +12,8 @@ public enum Cards {
     OFERTAS("ofertas_academicas"),
     PERFIL("perfil"),
     HOME("homepanel"),
-    PRUEBA("PRUEBA");
+    LOGIN("loginpanel"),
+    SIGNUP("signuppanel");
 
     private final String card;
     private Cards(String cardlayout){

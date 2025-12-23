@@ -59,15 +59,13 @@ public class Login extends javax.swing.JPanel {
         panelRound1.setRoundTopLeft(25);
         panelRound1.setRoundTopRight(25);
 
-        contraseña.setText("jPasswordField1");
-
-        usuario.setText("jTextField1");
-
-        boton.setText("jButton1");
+        boton.setText("Acceder");
         boton.setPreferredSize(new java.awt.Dimension(75, 22));
 
+        registrar.setForeground(new java.awt.Color(153, 153, 153));
         registrar.setText("¿No tienes cuenta? ¡Registresé!");
 
+        regresar.setForeground(new java.awt.Color(153, 153, 153));
         regresar.setText("Regresar");
 
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
