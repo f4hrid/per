@@ -7,16 +7,14 @@ package controller;
 import static controller.Functions.print;
 import entities.Usuario;
 import entities.controllers.UsuarioJpaController;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import static controller.HomeController.bindMouseListener;
-import model.Cards;
+import model.Views;
 import static model.config.getEntityManagerFactory;
 import view.Home;
-import static view.Home.selectCard;
 import static view.Home.setHandCursor;
 import view.Login;
+import static view.Home.showCard;
 
 /**
  *
@@ -39,32 +37,29 @@ public class LoginController {
     public void init(){
         login();
         backButton();
+        signup();
     }
     
     private void login(){
-        Runnable clicked = ()->{
-            confirmUser();
-        };
-        
-        Runnable entered = ()->{
-            setHandCursor(main.boton);
-        };
-        
-        bindMouseListener(main.boton, clicked, entered);
+        bindMouseListener(
+                main.boton, 
+                ()->{confirmUser();}
+        );
     }
     
     private void backButton(){
-        
-        Runnable clicked = ()->{
-            selectCard(home.home, Cards.HOME.getCard());
-        };
-        Runnable entered = ()->{
-            setHandCursor(main.regresar);
-        };
-        
-        bindMouseListener(main.regresar, clicked, entered);
+        bindMouseListener(
+                main.regresar, 
+                ()->{showCard(home.home, Views.HOME.getCard());}
+        );
     }
     
+    private void signup(){
+        bindMouseListener(
+                main.registrar, 
+                ()->{home.PROXIMAMENTE();} 
+        );
+    }
     
     
     // Verifica las credenciales
@@ -73,7 +68,7 @@ public class LoginController {
         
         if (u==null || !u.getPasswordHash().equals(getPasswordSet())){
             main.contraseña.setText(null);
-            home.showMessagePane(
+            home.showMessage(
                 "Código y contraseña incorrecta. Inténtelo de nuevo.",
                 "Acceso a cuenta",
                 JOptionPane.ERROR_MESSAGE);

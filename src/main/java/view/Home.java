@@ -13,6 +13,7 @@ import java.awt.Cursor;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import static model.Views.LOGIN;
 import view.template.AccessControlButtonModel;
 
 /**
@@ -21,24 +22,24 @@ import view.template.AccessControlButtonModel;
  */
 public class Home extends javax.swing.JFrame {
     
-    public final Login login = new Login(this); //probar quitando >>final<<
+    public Login login = new Login(this); //probar quitando >>final<<
     
-    HomeController homecontrol = new HomeController(this);
+    private HomeController controller = new HomeController(this, login);
 
     /**
      * Creates new form home
      */
     public Home() {
         initComponents();
-        homecontrol.init();
+        home.add(login, LOGIN.toString());
+        controller.init();
     }
     
     public  Color getBackgroundMenu(){
         return menupanel.getBackground();
     }
     
-    
-    public int showConfirmPane(Object message, String title, int optiontype){
+    public int showConfirm(Object message, String title, int optiontype){
         return JOptionPane.showConfirmDialog(
                 this, 
                 message, 
@@ -47,8 +48,7 @@ public class Home extends javax.swing.JFrame {
         );
     }
     
-    public void showMessagePane(Object message, String title, int type){
-        controller.Functions.print("cacaloca");
+    public void showMessage(Object message, String title, int type){
         JOptionPane.showMessageDialog(
             this, 
             message, 
@@ -56,13 +56,21 @@ public class Home extends javax.swing.JFrame {
             type
         );
     }
-
-    public static AccessControlButtonModel createACBM(String titulo, Color color){
-        AccessControlButtonModel acbm = new AccessControlButtonModel(titulo, color);
-        return acbm;
+    
+    public void PROXIMAMENTE(){
+        JOptionPane.showMessageDialog(
+            this, 
+            "La ventana no se encuentra desarrollada, proximamente.", 
+            "Opción no disponible", 
+            JOptionPane.PLAIN_MESSAGE
+        );
     }
 
-    public static void setShaded(JComponent boton, Color color){
+    public static AccessControlButtonModel createACBM(String titulo, Color color, Color turn){
+        return new AccessControlButtonModel(titulo, color, turn);
+    }
+
+    public static void setShade(JComponent boton, Color color){
         boton.setBackground(color);
     }
     
@@ -74,7 +82,7 @@ public class Home extends javax.swing.JFrame {
      @param parent componente padre, contenedor de los diferentes cards
       @param cardname nombre del componente asignado 
     */
-    public static void selectCard(JPanel parent,String cardname){
+    public static void showCard(JPanel parent, String cardname){
         CardLayout card = (CardLayout) parent.getLayout();
         card.show(parent, cardname);
     }
@@ -106,6 +114,8 @@ public class Home extends javax.swing.JFrame {
 
         home = new javax.swing.JPanel();
         homepanel = new javax.swing.JPanel();
+        menupanel = new javax.swing.JPanel();
+        buttonbox = new javax.swing.JPanel();
         parentpanel = new javax.swing.JPanel();
         contentpanel = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -142,15 +152,49 @@ public class Home extends javax.swing.JFrame {
         accespanel = new javax.swing.JPanel();
         usuario = new javax.swing.JLabel();
         accesscontrol = new javax.swing.JPanel();
-        menupanel = new javax.swing.JPanel();
-        buttonbox = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
 
         home.setLayout(new java.awt.CardLayout());
 
-        homepanel.setLayout(new java.awt.BorderLayout());
+        homepanel.setLayout(new javax.swing.BoxLayout(homepanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        menupanel.setBackground(new java.awt.Color(51, 51, 51));
+        menupanel.setPreferredSize(new java.awt.Dimension(200, 540));
+
+        buttonbox.setBackground(menupanel.getBackground());
+        buttonbox.setPreferredSize(new java.awt.Dimension(175, 550));
+
+        javax.swing.GroupLayout buttonboxLayout = new javax.swing.GroupLayout(buttonbox);
+        buttonbox.setLayout(buttonboxLayout);
+        buttonboxLayout.setHorizontalGroup(
+            buttonboxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 175, Short.MAX_VALUE)
+        );
+        buttonboxLayout.setVerticalGroup(
+            buttonboxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 547, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout menupanelLayout = new javax.swing.GroupLayout(menupanel);
+        menupanel.setLayout(menupanelLayout);
+        menupanelLayout.setHorizontalGroup(
+            menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menupanelLayout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addComponent(buttonbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+        menupanelLayout.setVerticalGroup(
+            menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menupanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonbox, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        homepanel.add(menupanel);
 
         parentpanel.setBackground(new java.awt.Color(255, 255, 255));
         parentpanel.setLayout(new java.awt.BorderLayout());
@@ -329,7 +373,7 @@ public class Home extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 99, Short.MAX_VALUE)
+            .addGap(0, 91, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,7 +475,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -497,43 +541,7 @@ public class Home extends javax.swing.JFrame {
 
         parentpanel.add(accespanel, java.awt.BorderLayout.NORTH);
 
-        homepanel.add(parentpanel, java.awt.BorderLayout.CENTER);
-
-        menupanel.setBackground(new java.awt.Color(51, 51, 51));
-        menupanel.setPreferredSize(new java.awt.Dimension(200, 540));
-
-        buttonbox.setBackground(menupanel.getBackground());
-        buttonbox.setPreferredSize(new java.awt.Dimension(175, 550));
-
-        javax.swing.GroupLayout buttonboxLayout = new javax.swing.GroupLayout(buttonbox);
-        buttonbox.setLayout(buttonboxLayout);
-        buttonboxLayout.setHorizontalGroup(
-            buttonboxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 175, Short.MAX_VALUE)
-        );
-        buttonboxLayout.setVerticalGroup(
-            buttonboxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout menupanelLayout = new javax.swing.GroupLayout(menupanel);
-        menupanel.setLayout(menupanelLayout);
-        menupanelLayout.setHorizontalGroup(
-            menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menupanelLayout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addComponent(buttonbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
-        menupanelLayout.setVerticalGroup(
-            menupanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menupanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonbox, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        homepanel.add(menupanel, java.awt.BorderLayout.WEST);
+        homepanel.add(parentpanel);
 
         home.add(homepanel, "homepanel");
 

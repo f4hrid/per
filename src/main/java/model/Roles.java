@@ -8,7 +8,7 @@ package model;
  *
  * @author Fahrid
  */
-public enum Users {
+public enum Roles {
     ADMINISTRADOR("administrador"),
     DOCENTE("docente"),
     ESTUDIANTE("estudiante"),
@@ -16,7 +16,7 @@ public enum Users {
     
     private final String rol;
 
-    private Users(String rol){
+    private Roles(String rol){
         this.rol = rol;
     }
     
@@ -24,3 +24,4 @@ public enum Users {
         return rol;
     }   
 }
+

@@ -5,6 +5,8 @@
 package view.template;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -16,15 +18,36 @@ public class AccessControlButtonModel extends javax.swing.JPanel {
      * Creates new form AccessControlButtonModel
      * @param text texto descriptivo del boton rojo de acceso
      * @param color color del boton (normalmente rojo univalluno)
+     * @param turn color del boton (normalmente rojo univalluno)
      */
-    public AccessControlButtonModel(String text, Color color) {
+    public AccessControlButtonModel(String text, Color color, Color turn) {
         initComponents();
-        texto.setText(text);
+        setTitle(text);
         setColor(color); 
+        setEffects(color, turn);
+    }
+    
+    private void setTitle(String t){
+        texto.setText(t);
+        
     }
     
     private void setColor(Color c){
         boton.setBackground(c);
+    }
+
+    private void setEffects(Color color, Color turn){
+        boton.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseEntered(MouseEvent e){
+                view.Home.setHandCursor(boton);
+                view.Home.setShade(boton, turn);
+            }
+            @Override
+            public void mouseExited(MouseEvent e){
+                view.Home.setShade(boton, color);
+            }
+        });
     }
 
     /**
@@ -59,16 +82,16 @@ public class AccessControlButtonModel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(106, Short.MAX_VALUE)
                 .addComponent(boton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
                 .addComponent(boton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

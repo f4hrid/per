@@ -5,6 +5,7 @@
 package view;
 
 import controller.LoginController;
+import static view.Home.setHandCursor;
 import static view.Home.setSVG;
 
 /**
@@ -13,7 +14,6 @@ import static view.Home.setSVG;
  */
 public class Login extends javax.swing.JPanel {
     Home home;
-    
     public LoginController controller;
     
     /**
@@ -30,10 +30,14 @@ public class Login extends javax.swing.JPanel {
         setImages();
     }
     
-    
     private void setImages(){
         setSVG(logo,"svg/logo-uv.svg",150,180);
     }
+    
+    private void setCursorForm(){
+        
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,12 +65,27 @@ public class Login extends javax.swing.JPanel {
 
         boton.setText("Acceder");
         boton.setPreferredSize(new java.awt.Dimension(75, 22));
+        boton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botonMouseEntered(evt);
+            }
+        });
 
         registrar.setForeground(new java.awt.Color(153, 153, 153));
         registrar.setText("¿No tienes cuenta? ¡Registresé!");
+        registrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botonMouseEntered(evt);
+            }
+        });
 
         regresar.setForeground(new java.awt.Color(153, 153, 153));
         regresar.setText("Regresar");
+        regresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botonMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
         panelRound1.setLayout(panelRound1Layout);
@@ -122,6 +141,13 @@ public class Login extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonMouseEntered
+        // TODO add your handling code here:
+        setHandCursor(boton);
+        setHandCursor(regresar);
+        setHandCursor(registrar);
+    }//GEN-LAST:event_botonMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -3,9 +3,9 @@
   <persistence-unit name="pornhub" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>entities.Docente</class>
-    <class>entities.Usuario</class>
     <class>entities.Administrador</class>
     <class>entities.Estudiante</class>
+    <class>entities.Usuario</class>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bd_gea?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="jakarta.persistence.jdbc.user" value="admin"/>
