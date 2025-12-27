@@ -9,12 +9,20 @@ package view;
  * @author Fahrid
  */
 public class Dashboard extends javax.swing.JPanel {
-
+    private final Home home;
+    private final controller.DashboardController controller;
+    
     /**
      * Creates new form Dashboard
+     * @param h vista hogar principal
      */
-    public Dashboard() {
+    public Dashboard(Home h) {
         initComponents();
+        
+        this.home = h;
+        this.controller = new controller.DashboardController(this, home);
+        
+        controller.init();
     }
 
     /**

@@ -13,8 +13,8 @@ import static view.Home.setSVG;
  * @author Fahrid
  */
 public class Login extends javax.swing.JPanel {
-    Home home;
-    public LoginController controller;
+    private final Home home;
+    private final LoginController controller;
     
     /**
      * Creates new form Login

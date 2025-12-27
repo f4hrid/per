@@ -5,7 +5,6 @@
 package view;
 
 import controller.HomeController;
-import controller.LoginController;
 import custom.LabelSVG;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -13,6 +12,7 @@ import java.awt.Cursor;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import static model.Views.DASHBOARD;
 import static model.Views.LOGIN;
 import view.template.AccessControlButtonModel;
 
@@ -21,10 +21,9 @@ import view.template.AccessControlButtonModel;
  * @author Fahrid
  */
 public class Home extends javax.swing.JFrame {
-    
-    public Login login = new Login(this); //probar quitando >>final<<
-    
-    private HomeController controller = new HomeController(this, login);
+    private final Login login = new Login(this);
+    private final Dashboard dashboard = new Dashboard(this);
+    private final HomeController controller = new HomeController(this, login);
 
     /**
      * Creates new form home
@@ -35,7 +34,12 @@ public class Home extends javax.swing.JFrame {
         controller.init();
     }
     
-    public  Color getBackgroundMenu(){
+    private void agg(){
+        home.add(login, LOGIN.toString());
+        home.add(dashboard, DASHBOARD.toString());
+    }
+    
+    public Color getBackgroundMenu(){
         return menupanel.getBackground();
     }
     

@@ -11,8 +11,7 @@ package model;
 public enum Roles {
     ADMINISTRADOR("administrador"),
     DOCENTE("docente"),
-    ESTUDIANTE("estudiante"),
-    INVITADO("invitado");
+    ESTUDIANTE("estudiante");
     
     private final String rol;
 

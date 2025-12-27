@@ -5,20 +5,14 @@
 package controller;
 
 import static controller.Functions.print;
-import entities.Estudiante;
-import entities.Usuario;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import static view.Home.createACBM;
 import static model.config.REDUV;
 import view.Home;
-import static view.Home.setHandCursor;
 import static model.Views.LOGIN;
-import static model.Views.SIGNUP;
-import static view.Home.setShade;
 import static view.Home.showCard;
 import view.Login;
 import view.template.AccessControlButtonModel;
@@ -42,12 +36,9 @@ public class HomeController {
     }
         
     private void setUpView(){
-        if (login.controller.getUser()!=null){
-            //setUpView_ByRole();
-        }else{
             setUpView_Invitado();
-        }
     }
+    
     /*
     private void setUpView_ByRole(){
         switch(login.getRol()){

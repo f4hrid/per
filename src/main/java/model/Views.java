@@ -10,14 +10,15 @@ package model;
  */
 public enum Views {
     /* VISTAS ASIGNADAS */
-    OFERTAS("mainofferspanel"), // vista principal de ofertas académicas (inv, est & doc)
-    PERFIL("profilepanel"),     // vista de administración de perfiles (est & doc)
+    OFFERS("mainofferspanel"), // vista principal de ofertas académicas (inv, est & doc)
+    PROFILE("profilepanel"),     // vista de administración de perfiles (est & doc)
     HOME("homepanel"),          // vista
     LOGIN("loginpanel"),        // vista de control RBAC LOGIN
     SIGNUP("signuppanel"),      // vista de control RBAC SIGNUP
-    DASHBOARD("dashboardpanel");// vista de administrador
+    DASHBOARD("dashboardpanel");// vista de administrador: PANEL DE CONTROL
 
     private final String card;
+    
     private Views(String cardlayout){
         this.card = cardlayout;
     }
