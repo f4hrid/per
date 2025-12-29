@@ -19,7 +19,6 @@ public class TabButtonModel extends javax.swing.JPanel {
     public TabButtonModel(String text, String svgdir, int size) {
         initComponents();
         setTitle(text);
-        view.Home.setSVG(icono, svgdir, size);
     }
     
     private void setTitle(String text){

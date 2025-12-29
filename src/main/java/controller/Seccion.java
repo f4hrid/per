@@ -8,7 +8,7 @@ import static java.awt.Color.BLACK;
 import model.Roles;
 import static model.config.REDUV;
 import view.Home;
-import static view.Home.getButton;
+import static view.Home.setProperties;
 
 /**
  *

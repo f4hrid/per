@@ -68,6 +68,7 @@ public class LoginController {
             return;
         }
         
+        user = u;
         onLoginSuccess();
     }
     
@@ -90,6 +91,7 @@ public class LoginController {
     
     private void onLoginSuccess(){
         onEmptyFields(true);
+        showCard(home.home, model.Views.HOME.getCard());
     }
 
     private void onLoginError(){
@@ -101,7 +103,7 @@ public class LoginController {
     }
         
     public Usuario getUser(){
-        return user = authenticate();
+        return user;
     }
     
     private void onEmptyFields(boolean b){

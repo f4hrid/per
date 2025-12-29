@@ -9,7 +9,6 @@ import entities.Usuario;
 import entities.controllers.UsuarioJpaController;
 import static model.config.getEntityManagerFactory;
 import static view.Home.setHandCursor;
-import static view.Home.setSVG;
 
 /**
  *
@@ -161,7 +160,7 @@ public class Login extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     
     private void setImages(){
-        setSVG(logo,"svg/logo-uv.svg",150,180);
+        home.setSVG(logo,"svg/logo-uv.svg",150,180);
     }
     
     public String getUsername(){

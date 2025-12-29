@@ -9,13 +9,14 @@ import static java.awt.Color.BLACK;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import static model.config.REDUV;
 import view.Home;
 import static model.Views.LOGIN;
 import static view.Home.showCard;
 import view.Login;
 import jilmar.PanelRound;
-import static view.Home.getButton;
+import static view.Home.setProperties;
 
 /**
  *
@@ -32,37 +33,33 @@ public class HomeController {
     
 
     public void init(){
-        setUpView();
+        setupView();
     }
         
-    private void setUpView(){
-        print(login.user);
-        setUpView_Invitado();
-        
-        /*
-        if (login.user.getRol().isEmpty()){
-            setUpView_ByRole();
-        } else{
-            setUpView_Invitado();
+    private void setupView(){
+        if (login.user!=null){
+            setupViewByRole();
+            print("hola desde el setup");
+        } else {
+            setupView_Invitado();
         }
-        */
     }
     
-    private void setUpView_ByRole(){
+    private void setupViewByRole(){
         switch(login.user.getRol()){
             case "administrador" ->{
                 //funciones para administrador
-                //setUpView_Admin();
-                //setUserName();
+                print("hola desde la vista de administrador");
             } case "docente" ->{
-                
+                print("hola desde la vista de docente");
             } case "estudiante" ->{
                 setUpView_Estudiante();
+                print("hola desde la vista de estudiante");
             }
         }
     }
     
-    private void setUpView_Invitado(){
+    private void setupView_Invitado(){
         rbacLogin();
         rbacSignup();
     }
@@ -72,25 +69,34 @@ public class HomeController {
     }
     
     private void rbacSignup(){
-        PanelRound b = getButton("Registrarse", REDUV, BLACK);
-        mouseListener(b, ()->{
+        String title = "Registrarse";
+        JPanel container = main.accesscontrol;
+        
+        PanelRound b = setProperties(title, REDUV, BLACK, container);
+        mouseListener(b, () ->
             //showCard(main.home, SIGNUP.getCard()); //cambiar de carta
-            main.PROXIMAMENTE();
-        });
+            main.PROXIMAMENTE()
+        );
     }
     
     private void rbacLogout(){
-        PanelRound b = getButton("Cerrar Sesión", REDUV, BLACK);
-        mouseListener(b, ()->{
-            main.PROXIMAMENTE();
-        });
+        String title = "Cerrar Sesión";
+        JPanel container = main.accesscontrol;
+        
+        PanelRound b = setProperties(title, REDUV, BLACK, container);
+        mouseListener(b, () ->
+            main.PROXIMAMENTE()
+        );
     }
     
     private void rbacLogin(){
-        PanelRound b = getButton("Iniciar Sesión", REDUV, BLACK);
-        mouseListener(b, () -> {
-            showCard(main.home, LOGIN.toString());
-        });
+        String title = "Iniciar Sesión";
+        JPanel container = main.accesscontrol;
+        
+        PanelRound b = setProperties(title, REDUV, BLACK, container);
+        mouseListener(b, () ->
+            showCard(main.home, LOGIN.toString())
+        );
     }
     
     public static void mouseListener(JComponent boton, Runnable clicked){

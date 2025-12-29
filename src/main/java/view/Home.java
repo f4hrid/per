@@ -4,6 +4,7 @@
  */
 package view;
 
+import static controller.Functions.print;
 import controller.HomeController;
 import custom.LabelSVG;
 import java.awt.CardLayout;
@@ -72,10 +73,10 @@ public class Home extends javax.swing.JFrame {
         );
     }
 
-    private static PanelRound getaButton(String titulo, Color color){
+    private static PanelRound createRoundButton(String titulo, Color color){
         PanelRound b = new PanelRound();
         JLabel t = new JLabel();
-
+        
         b.setBackground(color);
         b.setPreferredSize(new java.awt.Dimension(150, 40));
         b.setRoundBottomLeft(15);
@@ -93,10 +94,11 @@ public class Home extends javax.swing.JFrame {
         return b;
     }
     
-    public static PanelRound getButton(String titulo, Color color, Color turn){
-        PanelRound boton = getaButton(titulo, color);
-        mouseEntered(boton, ()->{setShade(boton, turn);});
-        mouseExited(boton, ()->{setShade(boton, color);});
+    public static PanelRound setProperties(String titulo, Color pre, Color post, JPanel container){
+        PanelRound boton = createRoundButton(titulo, pre);
+        mouseEntered(boton, ()->{setShade(boton, post); setHandCursor(boton);});
+        mouseExited(boton, ()->{setShade(boton, pre);});
+        container.add(boton);
         return boton;
     }
     
@@ -135,19 +137,13 @@ public class Home extends javax.swing.JFrame {
         card.show(parent, cardname);
     }
 
-    public static void setSVG(LabelSVG svg,String dir,int size){
-        try {
-            svg.setSVGImage(dir, size, size);
-        } catch (Exception e){
-            System.out.println("No existe ninguna imagen en el directorio: "+dir);
-        }
-    }
-
-    public static void setSVG(LabelSVG svg,String dir, int height, int weight){
+    public void setSVG(LabelSVG svg,String dir, int height, int weight){
         try {
             svg.setSVGImage(dir, height, weight);
         } catch (Exception e){
-            System.out.println("No existe ninguna imagen en el directorio: "+dir);
+            showMessage("No existe ninguna imagen en el directorio: "+dir, 
+                    "Elemento no encontrado", 
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
