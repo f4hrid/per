@@ -8,30 +8,29 @@ import static controller.Functions.print;
 import entities.Usuario;
 import entities.controllers.UsuarioJpaController;
 import javax.swing.JOptionPane;
-import static controller.HomeController.bindMouseListener;
 import model.Views;
-import static model.config.getEntityManagerFactory;
 import view.Home;
-import static view.Home.setHandCursor;
 import view.Login;
 import static view.Home.showCard;
+import static controller.HomeController.mouseListener;
 
 /**
  *
  * @author Fahrid
  */
 public class LoginController {
-    UsuarioJpaController jpa = new UsuarioJpaController(getEntityManagerFactory());
     
-    Home home;
-    Login main;
-    Usuario user;
+    private Usuario user;
+    
+    private final Home home;
+    private final Login main;
+    private final UsuarioJpaController jpa;
  
     
-    public LoginController(Login l, Home h){
+    public LoginController(Login l, Home h, UsuarioJpaController jpa){
         this.main = l;
         this.home = h;
-        this.user = null;
+        this.jpa = jpa;
     }
     
     public void init(){
@@ -41,55 +40,74 @@ public class LoginController {
     }
     
     private void login(){
-        bindMouseListener(
+        mouseListener(
                 main.boton, 
-                ()->{confirmUser();}
+                this::confirm
         );
     }
     
     private void backButton(){
-        bindMouseListener(
+        mouseListener(
                 main.regresar, 
-                ()->{showCard(home.home, Views.HOME.getCard());}
+                ()->showCard(home.home, Views.HOME.getCard())
         );
     }
     
     private void signup(){
-        bindMouseListener(
+        mouseListener(
                 main.registrar, 
-                ()->{home.PROXIMAMENTE();} 
+                ()->home.PROXIMAMENTE()
         );
     }
     
-    
-    // Verifica las credenciales
-    private Usuario confirmUser() {
-        Usuario u = jpa.findUsuario(getUserSet());
+    private void confirm(){
+        Usuario u = authenticate();
         
-        if (u==null || !u.getPasswordHash().equals(getPasswordSet())){
-            main.contraseña.setText(null);
-            home.showMessage(
-                "Código y contraseña incorrecta. Inténtelo de nuevo.",
-                "Acceso a cuenta",
-                JOptionPane.ERROR_MESSAGE);
+        if (u==null){
+            onLoginError();
+            return;
+        }
+        
+        onLoginSuccess();
+    }
+    
+    private Usuario authenticate(){
+        String usuario = main.getUsername();
+        String contraseña = main.getPassword();
+        
+        Usuario u = jpa.findUsuario(usuario);
+        
+        if (u==null){
             return null;
         }
         
-        //limpiar datos
-        main.usuario.setText(null);
-        main.contraseña.setText(null);
-        return user = u; //retornar el USUARIO
+        if (!u.getPasswordHash().equals(contraseña)) {
+            return null;
+        }
+        
+        return u;
     }
     
-    public Usuario getUser(){
-        return user;
-    }
-    
-    private String getUserSet(){
-        return main.usuario.getText().trim();
+    private void onLoginSuccess(){
+        onEmptyFields(true);
     }
 
-    private String getPasswordSet(){
-        return main.contraseña.getText();
+    private void onLoginError(){
+        onEmptyFields(false);
+        home.showMessage(
+            "Código y contraseña incorrecta. Inténtelo de nuevo.",
+            "Acceso a cuenta",
+            JOptionPane.ERROR_MESSAGE);
+    }
+        
+    public Usuario getUser(){
+        return user = authenticate();
+    }
+    
+    private void onEmptyFields(boolean b){
+        main.onEmptyFieldPassword();
+        if (b){
+            main.onEmptyFieldUser();
+        }
     }
 }

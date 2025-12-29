@@ -10,11 +10,13 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import static javax.swing.SwingConstants.CENTER;
+import jilmar.PanelRound;
 import static model.Views.DASHBOARD;
 import static model.Views.LOGIN;
-import view.template.AccessControlButtonModel;
 
 /**
  *
@@ -70,10 +72,52 @@ public class Home extends javax.swing.JFrame {
         );
     }
 
-    public static AccessControlButtonModel createACBM(String titulo, Color color, Color turn){
-        return new AccessControlButtonModel(titulo, color, turn);
-    }
+    private static PanelRound getaButton(String titulo, Color color){
+        PanelRound b = new PanelRound();
+        JLabel t = new JLabel();
 
+        b.setBackground(color);
+        b.setPreferredSize(new java.awt.Dimension(150, 40));
+        b.setRoundBottomLeft(15);
+        b.setRoundBottomRight(15);
+        b.setRoundTopLeft(15);
+        b.setRoundTopRight(15);
+        b.setLayout(new java.awt.BorderLayout());
+
+        t.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        t.setForeground(new java.awt.Color(255, 255, 255));
+        t.setHorizontalAlignment(CENTER);
+        t.setText(titulo);
+        b.add(t, java.awt.BorderLayout.CENTER);
+
+        return b;
+    }
+    
+    public static PanelRound getButton(String titulo, Color color, Color turn){
+        PanelRound boton = getaButton(titulo, color);
+        mouseEntered(boton, ()->{setShade(boton, turn);});
+        mouseExited(boton, ()->{setShade(boton, color);});
+        return boton;
+    }
+    
+    public static void mouseEntered(JComponent b, Runnable r){
+        b.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e){
+                r.run();
+            }
+        });
+    }
+    
+    public static void mouseExited(JComponent b, Runnable r){
+        b.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e){
+                r.run();
+            }
+        });
+    }
+    
     public static void setShade(JComponent boton, Color color){
         boton.setBackground(color);
     }
@@ -519,10 +563,11 @@ public class Home extends javax.swing.JFrame {
         accespanel.setPreferredSize(new java.awt.Dimension(760, 50));
 
         usuario.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        usuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         usuario.setText("jLabel1");
 
         accesscontrol.setPreferredSize(new java.awt.Dimension(209, 50));
-        accesscontrol.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 0));
+        accesscontrol.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         javax.swing.GroupLayout accespanelLayout = new javax.swing.GroupLayout(accespanel);
         accespanel.setLayout(accespanelLayout);
@@ -567,7 +612,7 @@ public class Home extends javax.swing.JFrame {
     public jilmar.PanelRound boton_diplomados;
     public jilmar.PanelRound boton_seminarios;
     public jilmar.PanelRound boton_talleres;
-    private javax.swing.JPanel buttonbox;
+    public javax.swing.JPanel buttonbox;
     public javax.swing.JPanel contentpanel;
     public javax.swing.JPanel contentpanel_ofertas;
     public javax.swing.JPanel home;

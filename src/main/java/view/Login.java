@@ -5,6 +5,9 @@
 package view;
 
 import controller.LoginController;
+import entities.Usuario;
+import entities.controllers.UsuarioJpaController;
+import static model.config.getEntityManagerFactory;
 import static view.Home.setHandCursor;
 import static view.Home.setSVG;
 
@@ -13,8 +16,11 @@ import static view.Home.setSVG;
  * @author Fahrid
  */
 public class Login extends javax.swing.JPanel {
+    public Usuario user;
+    
     private final Home home;
     private final LoginController controller;
+    private final UsuarioJpaController jpa;
     
     /**
      * Creates new form Login
@@ -24,20 +30,14 @@ public class Login extends javax.swing.JPanel {
         initComponents();
 
         this.home = h;
-        this.controller = new LoginController(this, home);
+        this.jpa = new UsuarioJpaController(getEntityManagerFactory());
+        this.controller = new LoginController(this, home, jpa);
+
+        this.user = controller.getUser();
 
         controller.init();
         setImages();
     }
-    
-    private void setImages(){
-        setSVG(logo,"svg/logo-uv.svg",150,180);
-    }
-    
-    private void setCursorForm(){
-        
-    }
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,4 +159,24 @@ public class Login extends javax.swing.JPanel {
     public javax.swing.JLabel regresar;
     public javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
+    
+    private void setImages(){
+        setSVG(logo,"svg/logo-uv.svg",150,180);
+    }
+    
+    public String getUsername(){
+        return usuario.getText().trim();
+    }
+    
+    public String getPassword(){
+        return contraseña.getText();
+    }
+
+    public void onEmptyFieldUser() {
+        usuario.setText(null);
+    }
+
+    public void onEmptyFieldPassword() {
+        contraseña.setText(null);
+    }
 }

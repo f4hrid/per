@@ -5,17 +5,17 @@
 package controller;
 
 import static controller.Functions.print;
-import java.awt.Color;
+import static java.awt.Color.BLACK;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
-import static view.Home.createACBM;
 import static model.config.REDUV;
 import view.Home;
 import static model.Views.LOGIN;
 import static view.Home.showCard;
 import view.Login;
-import view.template.AccessControlButtonModel;
+import jilmar.PanelRound;
+import static view.Home.getButton;
 
 /**
  *
@@ -36,28 +36,31 @@ public class HomeController {
     }
         
     private void setUpView(){
+        print(login.user);
+        setUpView_Invitado();
+        
+        /*
+        if (login.user.getRol().isEmpty()){
+            setUpView_ByRole();
+        } else{
             setUpView_Invitado();
+        }
+        */
     }
     
-    /*
     private void setUpView_ByRole(){
-        switch(login.getRol()){
-            case "administrador":
+        switch(login.user.getRol()){
+            case "administrador" ->{
                 //funciones para administrador
                 //setUpView_Admin();
-                setUserName();
-                break;
-            case "docente": 
-                //setUpView_Docente();
-                setUserName();
-                break;
-            case "estudiante": 
+                //setUserName();
+            } case "docente" ->{
+                
+            } case "estudiante" ->{
                 setUpView_Estudiante();
-                setUserName();
-                break;
+            }
         }
     }
-    */
     
     private void setUpView_Invitado(){
         rbacLogin();
@@ -69,44 +72,28 @@ public class HomeController {
     }
     
     private void rbacSignup(){
-        AccessControlButtonModel b = createAccess("Registrarse");
-        bindMouseListener(b.boton, ()->{
+        PanelRound b = getButton("Registrarse", REDUV, BLACK);
+        mouseListener(b, ()->{
             //showCard(main.home, SIGNUP.getCard()); //cambiar de carta
             main.PROXIMAMENTE();
         });
     }
     
     private void rbacLogout(){
-        AccessControlButtonModel b = createAccess("Cerrar Sesión");
-        bindMouseListener(b.boton, ()->{
+        PanelRound b = getButton("Cerrar Sesión", REDUV, BLACK);
+        mouseListener(b, ()->{
             main.PROXIMAMENTE();
         });
     }
     
     private void rbacLogin(){
-        AccessControlButtonModel b = createAccess("Iniciar Sesión");
-        bindMouseListener(b.boton, () -> {
+        PanelRound b = getButton("Iniciar Sesión", REDUV, BLACK);
+        mouseListener(b, () -> {
             showCard(main.home, LOGIN.toString());
         });
     }
     
-    private AccessControlButtonModel createAccess(String titulo){
-        AccessControlButtonModel b = createACBM(titulo, REDUV, Color.BLACK);
-        main.accesscontrol.add(b);
-        return b;
-    }
-    /*
-    private void setUserName(){
-        try{
-            Estudiante e = login.getEstudiante();
-            main.usuario.setText(e.getNombres()+" "+e.getApellidos());
-        }catch(Exception e){
-            main.usuario.setText(null);
-        }
-    }
-    */
-
-    public static void bindMouseListener(JComponent boton, Runnable clicked){
+    public static void mouseListener(JComponent boton, Runnable clicked){
         boton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e){

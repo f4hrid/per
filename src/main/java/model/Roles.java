@@ -13,14 +13,14 @@ public enum Roles {
     DOCENTE("docente"),
     ESTUDIANTE("estudiante");
     
-    private final String rol;
+    private final String role;
 
-    private Roles(String rol){
-        this.rol = rol;
+    private Roles(String r){
+        this.role = r;
     }
     
-    public String getRol() {
-        return rol;
+    public String getRole() {
+        return role;
     }   
 }
 
