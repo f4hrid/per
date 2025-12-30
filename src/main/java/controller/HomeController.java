@@ -5,6 +5,7 @@
 package controller;
 
 import static controller.Functions.print;
+import entities.Usuario;
 import static java.awt.Color.BLACK;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,7 +38,7 @@ public class HomeController {
     }
         
     private void setupView(){
-        if (login.user!=null){
+        if (main.getUser()!=null){
             setupViewByRole();
             print("hola desde el setup");
         } else {
@@ -46,13 +47,13 @@ public class HomeController {
     }
     
     private void setupViewByRole(){
-        switch(login.user.getRol()){
-            case "administrador" ->{
+        switch(main.getUser().getRol()){
+            case "administrador" -> {
                 //funciones para administrador
                 print("hola desde la vista de administrador");
-            } case "docente" ->{
+            } case "docente" -> {
                 print("hola desde la vista de docente");
-            } case "estudiante" ->{
+            } case "estudiante" -> {
                 setUpView_Estudiante();
                 print("hola desde la vista de estudiante");
             }
@@ -60,15 +61,26 @@ public class HomeController {
     }
     
     private void setupView_Invitado(){
-        rbacLogin();
-        rbacSignup();
+        initLogin();
+        initSignup();
     }
     
     private void setUpView_Estudiante(){
-        rbacLogout();
+        initLogout();
+        setName();
     }
     
-    private void rbacSignup(){
+    private void initLogin(){
+        String title = "Iniciar Sesión";
+        JPanel container = main.accesscontrol;
+        
+        PanelRound b = setProperties(title, REDUV, BLACK, container);
+        mouseListener(b, () ->
+            showCard(main.home, LOGIN.toString())
+        );
+    }
+    
+    private void initSignup(){
         String title = "Registrarse";
         JPanel container = main.accesscontrol;
         
@@ -79,23 +91,13 @@ public class HomeController {
         );
     }
     
-    private void rbacLogout(){
+    private void initLogout(){
         String title = "Cerrar Sesión";
         JPanel container = main.accesscontrol;
         
         PanelRound b = setProperties(title, REDUV, BLACK, container);
         mouseListener(b, () ->
             main.PROXIMAMENTE()
-        );
-    }
-    
-    private void rbacLogin(){
-        String title = "Iniciar Sesión";
-        JPanel container = main.accesscontrol;
-        
-        PanelRound b = setProperties(title, REDUV, BLACK, container);
-        mouseListener(b, () ->
-            showCard(main.home, LOGIN.toString())
         );
     }
     
@@ -107,6 +109,10 @@ public class HomeController {
             }
         });
     }      
+
+    private void setName() {
+        main.usuario.setText(main.user.getEstudiante().getNombres()+" "+main.user.getEstudiante().getApellidos());
+    }
 
 }
 

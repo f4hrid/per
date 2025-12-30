@@ -7,6 +7,7 @@ package view;
 import static controller.Functions.print;
 import controller.HomeController;
 import custom.LabelSVG;
+import entities.Usuario;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -24,6 +25,7 @@ import static model.Views.LOGIN;
  * @author Fahrid
  */
 public class Home extends javax.swing.JFrame {
+    public Usuario user;
     private final Login login = new Login(this);
     private final Dashboard dashboard = new Dashboard(this);
     private final HomeController controller = new HomeController(this, login);
@@ -33,13 +35,30 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
-        home.add(login, LOGIN.toString());
         controller.init();
+        agg();
     }
     
     private void agg(){
         home.add(login, LOGIN.toString());
         home.add(dashboard, DASHBOARD.toString());
+    }
+
+    public void refresh(){
+        buttonbox.removeAll();
+        buttonbox.revalidate();
+        buttonbox.repaint();
+        accesscontrol.removeAll();
+        accesscontrol.revalidate();
+        accesscontrol.repaint();
+    }
+    
+    public Usuario getUser() {
+        return user;
+    }
+
+    public void setUser(Usuario user) {
+        this.user = user;
     }
     
     public Color getBackgroundMenu(){
@@ -63,79 +82,6 @@ public class Home extends javax.swing.JFrame {
             type
         );
     }
-    
-    public void PROXIMAMENTE(){
-        JOptionPane.showMessageDialog(
-            this, 
-            "La ventana no se encuentra desarrollada, proximamente.", 
-            "Opción no disponible", 
-            JOptionPane.PLAIN_MESSAGE
-        );
-    }
-
-    private static PanelRound createRoundButton(String titulo, Color color){
-        PanelRound b = new PanelRound();
-        JLabel t = new JLabel();
-        
-        b.setBackground(color);
-        b.setPreferredSize(new java.awt.Dimension(150, 40));
-        b.setRoundBottomLeft(15);
-        b.setRoundBottomRight(15);
-        b.setRoundTopLeft(15);
-        b.setRoundTopRight(15);
-        b.setLayout(new java.awt.BorderLayout());
-
-        t.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        t.setForeground(new java.awt.Color(255, 255, 255));
-        t.setHorizontalAlignment(CENTER);
-        t.setText(titulo);
-        b.add(t, java.awt.BorderLayout.CENTER);
-
-        return b;
-    }
-    
-    public static PanelRound setProperties(String titulo, Color pre, Color post, JPanel container){
-        PanelRound boton = createRoundButton(titulo, pre);
-        mouseEntered(boton, ()->{setShade(boton, post); setHandCursor(boton);});
-        mouseExited(boton, ()->{setShade(boton, pre);});
-        container.add(boton);
-        return boton;
-    }
-    
-    public static void mouseEntered(JComponent b, Runnable r){
-        b.addMouseListener(new java.awt.event.MouseAdapter(){
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e){
-                r.run();
-            }
-        });
-    }
-    
-    public static void mouseExited(JComponent b, Runnable r){
-        b.addMouseListener(new java.awt.event.MouseAdapter(){
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e){
-                r.run();
-            }
-        });
-    }
-    
-    public static void setShade(JComponent boton, Color color){
-        boton.setBackground(color);
-    }
-    
-    public static void setHandCursor(JComponent comp){
-        comp.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-    
-    /**
-     @param parent componente padre, contenedor de los diferentes cards
-      @param cardname nombre del componente asignado 
-    */
-    public static void showCard(JPanel parent, String cardname){
-        CardLayout card = (CardLayout) parent.getLayout();
-        card.show(parent, cardname);
-    }
 
     public void setSVG(LabelSVG svg,String dir, int height, int weight){
         try {
@@ -145,6 +91,14 @@ public class Home extends javax.swing.JFrame {
                     "Elemento no encontrado", 
                     JOptionPane.PLAIN_MESSAGE);
         }
+    }
+    
+    public void PROXIMAMENTE(){
+        showMessage(
+                "La ventana no se encuentra desarrollada, proximamente.", 
+                "Opción no disponible",
+                JOptionPane.PLAIN_MESSAGE
+        );
     }
 
     /**
@@ -599,6 +553,70 @@ public class Home extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+
+    private static PanelRound createRoundButton(String titulo, Color color){
+        PanelRound b = new PanelRound();
+        JLabel t = new JLabel();
+        
+        b.setBackground(color);
+        b.setPreferredSize(new java.awt.Dimension(150, 40));
+        b.setRoundBottomLeft(15);
+        b.setRoundBottomRight(15);
+        b.setRoundTopLeft(15);
+        b.setRoundTopRight(15);
+        b.setLayout(new java.awt.BorderLayout());
+
+        t.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        t.setForeground(new java.awt.Color(255, 255, 255));
+        t.setHorizontalAlignment(CENTER);
+        t.setText(titulo);
+        b.add(t, java.awt.BorderLayout.CENTER);
+
+        return b;
+    }
+    
+    public static PanelRound setProperties(String titulo, Color pre, Color post, JPanel container){
+        PanelRound boton = createRoundButton(titulo, pre);
+        mouseEntered(boton, ()->{setShade(boton, post); setHandCursor(boton);});
+        mouseExited(boton, ()->{setShade(boton, pre);});
+        container.add(boton);
+        return boton;
+    }
+    
+    public static void mouseEntered(JComponent b, Runnable r){
+        b.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e){
+                r.run();
+            }
+        });
+    }
+    
+    public static void mouseExited(JComponent b, Runnable r){
+        b.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e){
+                r.run();
+            }
+        });
+    }
+    
+    public static void setShade(JComponent boton, Color color){
+        boton.setBackground(color);
+    }
+    
+    public static void setHandCursor(JComponent comp){
+        comp.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+    
+    /**
+     @param parent componente padre, contenedor de los diferentes cards
+      @param cardname nombre del componente asignado 
+    */
+    public static void showCard(JPanel parent, String cardname){
+        CardLayout card = (CardLayout) parent.getLayout();
+        card.show(parent, cardname);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

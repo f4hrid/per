@@ -15,7 +15,6 @@ import static view.Home.setHandCursor;
  * @author Fahrid
  */
 public class Login extends javax.swing.JPanel {
-    public Usuario user;
     
     private final Home home;
     private final LoginController controller;
@@ -31,8 +30,6 @@ public class Login extends javax.swing.JPanel {
         this.home = h;
         this.jpa = new UsuarioJpaController(getEntityManagerFactory());
         this.controller = new LoginController(this, home, jpa);
-
-        this.user = controller.getUser();
 
         controller.init();
         setImages();

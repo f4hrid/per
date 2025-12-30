@@ -20,8 +20,6 @@ import static controller.HomeController.mouseListener;
  */
 public class LoginController {
     
-    private Usuario user;
-    
     private final Home home;
     private final Login main;
     private final UsuarioJpaController jpa;
@@ -68,8 +66,7 @@ public class LoginController {
             return;
         }
         
-        user = u;
-        onLoginSuccess();
+        onLoginSuccess(u);
     }
     
     private Usuario authenticate(){
@@ -89,9 +86,11 @@ public class LoginController {
         return u;
     }
     
-    private void onLoginSuccess(){
+    private void onLoginSuccess(Usuario u){
         onEmptyFields(true);
         showCard(home.home, model.Views.HOME.getCard());
+        home.refresh();
+        home.setUser(u);
     }
 
     private void onLoginError(){
@@ -101,11 +100,7 @@ public class LoginController {
             "Acceso a cuenta",
             JOptionPane.ERROR_MESSAGE);
     }
-        
-    public Usuario getUser(){
-        return user;
-    }
-    
+
     private void onEmptyFields(boolean b){
         main.onEmptyFieldPassword();
         if (b){
