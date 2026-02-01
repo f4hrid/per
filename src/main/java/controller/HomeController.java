@@ -24,53 +24,30 @@ import static view.Home.setProperties;
  * @author Fahrid
  */
 public class HomeController {
-    Home main;
-    Login login;
+    private final Home main;
+    private final Login login;
+    
+    private final HomeManager manager;
 
-    public HomeController(Home h, Login u) {
+    public HomeController(view.Home h, Login u) {
         this.main = h;
         this.login = u;
+        this.manager = new HomeManager(this, main);
     }
     
-
     public void init(){
         setupView();
     }
         
     private void setupView(){
         if (main.getUser()!=null){
-            setupViewByRole();
-            print("hola desde el setup");
+            manager.showByRole();
         } else {
-            setupView_Invitado();
+            manager.showInvitado();
         }
     }
     
-    private void setupViewByRole(){
-        switch(main.getUser().getRol()){
-            case "administrador" -> {
-                //funciones para administrador
-                print("hola desde la vista de administrador");
-            } case "docente" -> {
-                print("hola desde la vista de docente");
-            } case "estudiante" -> {
-                setUpView_Estudiante();
-                print("hola desde la vista de estudiante");
-            }
-        }
-    }
-    
-    private void setupView_Invitado(){
-        initLogin();
-        initSignup();
-    }
-    
-    private void setUpView_Estudiante(){
-        initLogout();
-        setName();
-    }
-    
-    private void initLogin(){
+    public void initLogin(){
         String title = "Iniciar Sesión";
         JPanel container = main.accesscontrol;
         
@@ -80,7 +57,7 @@ public class HomeController {
         );
     }
     
-    private void initSignup(){
+    public void initSignup(){
         String title = "Registrarse";
         JPanel container = main.accesscontrol;
         
@@ -91,7 +68,7 @@ public class HomeController {
         );
     }
     
-    private void initLogout(){
+    public void initLogout(){
         String title = "Cerrar Sesión";
         JPanel container = main.accesscontrol;
         
@@ -109,7 +86,13 @@ public class HomeController {
             }
         });
     }      
-
+    
+    /*
+    public void setUser(Usuario u){
+        main.user = u;
+    }
+    */
+    
     private void setName() {
         main.usuario.setText(main.user.getEstudiante().getNombres()+" "+main.user.getEstudiante().getApellidos());
     }
